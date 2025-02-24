@@ -16,11 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-// Generated using typescript-generator version 3.2.1263 on 2025-02-14 21:48:17.
+// Generated using typescript-generator version 3.2.1263 on 2025-02-24 11:14:17.
 
 export class NamedStreamPipesEntity implements Storable {
     '@class':
@@ -1090,24 +1089,6 @@ export class CustomTransformOutputStrategy extends OutputStrategy {
     }
 }
 
-export class DashboardEntity implements Storable {
-    elementId: string;
-    rev: string;
-
-    static fromData(
-        data: DashboardEntity,
-        target?: DashboardEntity,
-    ): DashboardEntity {
-        if (!data) {
-            return data;
-        }
-        const instance = target || new DashboardEntity();
-        instance.elementId = data.elementId;
-        instance.rev = data.rev;
-        return instance;
-    }
-}
-
 export class DashboardItem {
     cols: number;
     component: string;
@@ -1184,45 +1165,6 @@ export class DashboardModel implements Storable {
         instance.widgets = __getCopyArrayFn(DashboardItem.fromData)(
             data.widgets,
         );
-        return instance;
-    }
-}
-
-export class DataExplorerWidgetModel extends DashboardEntity {
-    baseAppearanceConfig: { [index: string]: any };
-    dataConfig: { [index: string]: any };
-    measureName: string;
-    pipelineId: string;
-    timeSettings: { [index: string]: any };
-    visualizationConfig: { [index: string]: any };
-    widgetId: string;
-    widgetType: string;
-
-    static fromData(
-        data: DataExplorerWidgetModel,
-        target?: DataExplorerWidgetModel,
-    ): DataExplorerWidgetModel {
-        if (!data) {
-            return data;
-        }
-        const instance = target || new DataExplorerWidgetModel();
-        super.fromData(data, instance);
-        instance.baseAppearanceConfig = __getCopyObjectFn(__identity<any>())(
-            data.baseAppearanceConfig,
-        );
-        instance.dataConfig = __getCopyObjectFn(__identity<any>())(
-            data.dataConfig,
-        );
-        instance.measureName = data.measureName;
-        instance.pipelineId = data.pipelineId;
-        instance.timeSettings = __getCopyObjectFn(__identity<any>())(
-            data.timeSettings,
-        );
-        instance.visualizationConfig = __getCopyObjectFn(__identity<any>())(
-            data.visualizationConfig,
-        );
-        instance.widgetId = data.widgetId;
-        instance.widgetType = data.widgetType;
         return instance;
     }
 }
@@ -2153,6 +2095,8 @@ export class KafkaTransportProtocol extends TransportProtocol {
     'maxRequestSize': string;
     'messageMaxBytes': string;
     'offset': string;
+    'zookeeperHost': string;
+    'zookeeperPort': number;
 
     static 'fromData'(
         data: KafkaTransportProtocol,
@@ -2171,6 +2115,8 @@ export class KafkaTransportProtocol extends TransportProtocol {
         instance.maxRequestSize = data.maxRequestSize;
         instance.messageMaxBytes = data.messageMaxBytes;
         instance.offset = data.offset;
+        instance.zookeeperHost = data.zookeeperHost;
+        instance.zookeeperPort = data.zookeeperPort;
         return instance;
     }
 }

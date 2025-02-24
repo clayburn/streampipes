@@ -19,9 +19,9 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-// Generated using typescript-generator version 3.2.1263 on 2025-02-24 11:14:19.
+// Generated using typescript-generator version 3.2.1263 on 2025-02-24 11:25:02.
 
-import { Storable } from '@streampipes/platform-services';
+import { Storable } from './streampipes-model';
 
 export class Group implements Storable {
     elementId: string;
@@ -227,11 +227,6 @@ export class ServiceAccount extends Principal {
         instance.secretEncrypted = data.secretEncrypted;
         return instance;
     }
-}
-
-export interface Storable {
-    elementId: string;
-    rev: string;
 }
 
 export class UserAccount extends Principal {

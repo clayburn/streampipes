@@ -29,6 +29,7 @@ github:
     wiki: false
     issues: true
     projects: false
+    discussions: true
 
   custom_subjects:
     new_pr: "[PR] {title}"

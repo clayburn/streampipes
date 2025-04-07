@@ -45,7 +45,7 @@ import {
 } from '@streampipes/shared-ui';
 import { MatDialog } from '@angular/material/dialog';
 import { map, switchMap } from 'rxjs/operators';
-import { SpDataExplorerRoutes } from '../../../data-explorer/data-explorer.routes';
+import { SpDashboardRoutes } from '../../dashboard.routes';
 import { DataExplorerRoutingService } from '../../../data-explorer-shared/services/data-explorer-routing.service';
 import { DataExplorerDetectChangesService } from '../../../data-explorer/services/data-explorer-detect-changes.service';
 import { SupportsUnsavedChangeDialog } from '../../../data-explorer-shared/models/dataview-dashboard.model';
@@ -206,7 +206,7 @@ export class DashboardPanelComponent
             this.originalDashboard = JSON.parse(JSON.stringify(dashboard));
             this.breadcrumbService.updateBreadcrumb(
                 this.breadcrumbService.makeRoute(
-                    [SpDataExplorerRoutes.BASE],
+                    [SpDashboardRoutes.BASE],
                     this.dashboard.name,
                 ),
             );

@@ -34,7 +34,7 @@ modelName.title=Model Name
 modelName.description=Exact model string, e.g. "gpt-3.5-turbo", "claude-3-sonnet-20240229", or "llama2"
 
 systemPrompt.title=System Prompt
-systemPrompt.description=Sets the assistant’s role or persona (e.g. "You are a helpful coding assistant")
+systemPrompt.description=Sets the system prompt (e.g. "For each input number, if value greater than 15 then return `WARNING`, otherwise return `OK`.")
 
 anthropicKey.title=Anthropic API Key
 anthropicKey.description=Anthropic API key

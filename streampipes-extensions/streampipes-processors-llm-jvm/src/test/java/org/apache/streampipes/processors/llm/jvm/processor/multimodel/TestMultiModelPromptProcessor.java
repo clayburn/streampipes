@@ -17,6 +17,9 @@
  */
 package org.apache.streampipes.processors.llm.jvm.processor.multimodel;
 
+import org.apache.streampipes.model.graph.DataProcessorInvocation;
+import org.apache.streampipes.model.staticproperty.StaticProperty;
+import org.apache.streampipes.model.staticproperty.StaticPropertyAlternatives;
 import org.apache.streampipes.test.executors.ProcessingElementTestExecutor;
 import org.apache.streampipes.test.executors.TestConfiguration;
 
@@ -26,6 +29,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class TestMultiModelPromptProcessor {
 
@@ -40,17 +44,23 @@ public class TestMultiModelPromptProcessor {
   @Disabled("Disabled because of Anthropic ApiKey")
   public void testLLM() {
     TestConfiguration config = TestConfiguration.builder()
+            .configWithDefaultPrefix(MultiModelPromptProcessor.MAPPING_INPUT_ID, "userInput")
             .config(MultiModelPromptProcessor.MODEL_PROVIDER_ID, "Anthropic")
             .config(MultiModelPromptProcessor.MODEL_NAME_ID, "claude-3-5-sonnet-20240620")
             .config(MultiModelPromptProcessor.SYSTEM_PROMPT_ID, "In this chat, for each input number, calculate"
                     + " and return the current average. Do not output any other information than the answer.")
-            .config(MultiModelPromptProcessor.API_KEY_ID, "")
-            .config(MultiModelPromptProcessor.OLLAMA_URL_ID, "")
+            .config(MultiModelPromptProcessor.ANTHROPIC_KEY_ID, "")
             .config(MultiModelPromptProcessor.HISTORY_MODE_ID, "Windowed")
             .config(MultiModelPromptProcessor.WINDOW_SIZE_ID, 2)
             .config(MultiModelPromptProcessor.TEMPERATURE, 0.1)
-            .configWithDefaultPrefix(MultiModelPromptProcessor.MAPPING_INPUT_ID, "userInput")
             .build();
+
+    Consumer<DataProcessorInvocation> invocationConfig = (invocation -> {
+      // Select Anthropic (option 2 (index 1)) as the selected model provider.
+      List<StaticProperty> staticProperties = invocation.getStaticProperties();
+      StaticPropertyAlternatives modelAlternative = (StaticPropertyAlternatives) staticProperties.get(1);
+      modelAlternative.getAlternatives().get(1).setSelected(true);
+    });
 
     List<Map<String, Object>> inputEvents = List.of(
             Map.of("userInput", "1"),
@@ -64,7 +74,7 @@ public class TestMultiModelPromptProcessor {
             Map.of("userInput", "3", "llmOutput", "2")
     );
 
-    ProcessingElementTestExecutor testExecutor = new ProcessingElementTestExecutor(processor, config);
+    ProcessingElementTestExecutor testExecutor = new ProcessingElementTestExecutor(processor, config, invocationConfig);
 
     testExecutor.run(inputEvents, outputEvents);
   }

@@ -32,19 +32,19 @@ conversation when streaming events through StreamPipes.
 ### Configuration
 
 ### Configuration overview
-
-| Setting             | Purpose                                                                |
-|---------------------|------------------------------------------------------------------------|
-| **Model Provider**  | `"OpenAI"`, `"Anthropic"` or `"Ollama"`                                |
-| **Model Name**      | Any model string supported by the chosen provider (lists below)        |
-| **Temperature**     | *0–1* randomness control (higher->more creative, lower-> more precise) |
-| **System Prompt**   | Sets the assistant’s role / rules                                      |
-| **Input Field**     | Event field treated as the user message                                |
-| **History Mode**    | `"Stateless"`, `"Windowed"`, or `"Full"`                               |
-| **Window Size**     | N recent turns to keep when **Windowed**                               |
-| **API Key**         | Required for OpenAI/Anthropic                                          |
-| **Ollama Base URL** | Required for Ollama‑hosted Llama models                                |
-| **Output Field**    | Name of the new field carrying the LLM reply                           |
+| Setting               | Purpose                                                                      |
+|-----------------------|------------------------------------------------------------------------------|
+| **Model Provider**    | `"OpenAI"`, `"Anthropic"` or `"Ollama"`                                      |
+| **Model Name**        | Any model string supported by the chosen provider (lists below)              |
+| **Temperature**       | *0–1* randomness control (higher->more creative, lower-> more deterministic) |
+| **System Prompt**     | Sets the assistant’s role / rules                                            |
+| **Input Field**       | Event field treated as the user message                                      |
+| **History Mode**      | `"Stateless"`, `"Windowed"`, or `"Full"`                                     |
+| **Window Size**       | N recent turns to keep when **Windowed**                                     |
+| **OpenAI API Key**    | Api Key for OpenAI                                                           |
+| **Anthropic API Key** | Api Key for Anthropic                                                        |
+| **Ollama Base URL**   | Base URL of hosted Ollama instance                                           |
+| **Output Field**      | Name of the new field carrying the LLM reply                                 |
 
 ---
 
@@ -102,5 +102,5 @@ conversation when streaming events through StreamPipes.
 
 ### Output
 
-Each event is forwarded with an extra field (`llmOutput` by default) containing the model’s answer.  
+Each event is forwarded with an extra field (`llmResponse` by default) containing the model’s answer.  
 Conversation state is kept **in‑memory** and reset when the pipeline stops/restarts.

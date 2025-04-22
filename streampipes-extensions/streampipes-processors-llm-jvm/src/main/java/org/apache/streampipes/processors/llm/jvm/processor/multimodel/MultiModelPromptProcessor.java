@@ -29,8 +29,10 @@ import org.apache.streampipes.processors.llm.jvm.processor.multimodel.context.Ch
 import org.apache.streampipes.processors.llm.jvm.processor.multimodel.context.FullHistoryChatContext;
 import org.apache.streampipes.processors.llm.jvm.processor.multimodel.context.StatelessChatContext;
 import org.apache.streampipes.processors.llm.jvm.processor.multimodel.context.WindowedChatContext;
+import org.apache.streampipes.sdk.StaticProperties;
 import org.apache.streampipes.sdk.builder.ProcessingElementBuilder;
 import org.apache.streampipes.sdk.builder.StreamRequirementsBuilder;
+import org.apache.streampipes.sdk.helpers.Alternatives;
 import org.apache.streampipes.sdk.helpers.CodeLanguage;
 import org.apache.streampipes.sdk.helpers.EpProperties;
 import org.apache.streampipes.sdk.helpers.EpRequirements;
@@ -69,13 +71,14 @@ public class MultiModelPromptProcessor extends StreamPipesDataProcessor {
   public static final String MODEL_PROVIDER_ID = "modelProvider";
   public static final String MODEL_NAME_ID = "modelName";
   public static final String SYSTEM_PROMPT_ID = "systemPrompt";
-  public static final String API_KEY_ID = "apiKey";
+  public static final String ANTHROPIC_KEY_ID = "anthropicKey";
+  public static final String OPENAPI_KEY_ID = "openApiKey";
   public static final String OLLAMA_URL_ID = "ollamaUrl";
   public static final String MAPPING_INPUT_ID = "inputField";
   public static final String HISTORY_MODE_ID = "historyMode";
   public static final String WINDOW_SIZE_ID = "windowSize";
   public static final String TEMPERATURE = "temperature";
-  public static final String OUTPUT_FIELD_ID = "llmOutput";
+  public static final String OUTPUT_FIELD_ID = "llmResponse";
   public static final String STATELESS = "Stateless";
   public static final String WINDOWED = "Windowed";
   public static final String FULL = "Full";
@@ -114,12 +117,14 @@ public class MultiModelPromptProcessor extends StreamPipesDataProcessor {
                     .build())
 
             // LLM selection
-            .requiredSingleValueSelection(
-                    Labels.withId(MODEL_PROVIDER_ID),
-                    Options.from(PROVIDER_OPENAI, PROVIDER_ANTHROPIC, PROVIDER_OLLAMA))
+            .requiredAlternatives(Labels.withId(MODEL_PROVIDER_ID),
+                    Alternatives.from(Labels.withId(PROVIDER_OPENAI),
+                            StaticProperties.secretValue(Labels.withId(OPENAPI_KEY_ID))),
+                    Alternatives.from(Labels.withId(PROVIDER_ANTHROPIC),
+                            StaticProperties.secretValue(Labels.withId(ANTHROPIC_KEY_ID))),
+                    Alternatives.from(Labels.withId(PROVIDER_OLLAMA),
+                            StaticProperties.stringFreeTextProperty(Labels.withId(OLLAMA_URL_ID))))
             .requiredTextParameter(Labels.withId(MODEL_NAME_ID))
-            .requiredSecret(Labels.withId(API_KEY_ID))
-            .requiredTextParameter(Labels.withId(OLLAMA_URL_ID), false, false)
             .requiredFloatParameter(Labels.withId(TEMPERATURE), 0.1F, 0.1F, 0.9F, 0.1F)
 
             // Prompt & history behaviour
@@ -142,16 +147,20 @@ public class MultiModelPromptProcessor extends StreamPipesDataProcessor {
                            EventProcessorRuntimeContext runtimeContext) throws SpRuntimeException {
 
     var extractor = params.extractor();
-    String provider = extractor.selectedSingleValue(MODEL_PROVIDER_ID, String.class);
+    String provider = extractor.selectedAlternativeInternalId(MODEL_PROVIDER_ID);
     String modelName = extractor.singleValueParameter(MODEL_NAME_ID, String.class);
     String systemPromptRaw = extractor.codeblockValue(SYSTEM_PROMPT_ID);
-    String apiKey = extractor.singleValueParameter(API_KEY_ID, String.class);
-    String ollamaUrl = extractor.singleValueParameter(OLLAMA_URL_ID, String.class);
+    String anthropicKey = (PROVIDER_ANTHROPIC.equalsIgnoreCase(provider)
+            ? extractor.secretValue(ANTHROPIC_KEY_ID) : null);
+    String openApiKey = (PROVIDER_OPENAI.equalsIgnoreCase(provider)
+            ? extractor.secretValue(OPENAPI_KEY_ID) : null);
+    String ollamaUrl = (PROVIDER_OLLAMA.equalsIgnoreCase(provider)
+            ? extractor.singleValueParameter(OLLAMA_URL_ID, String.class) : null);
     Double temperature = extractor.singleValueParameter(TEMPERATURE, Double.class);
     this.inputFieldSelector = extractor.mappingPropertyValue(MAPPING_INPUT_ID);
 
     // Build model
-    this.chatModel = buildChatModel(provider, modelName, apiKey, ollamaUrl, temperature);
+    this.chatModel = buildChatModel(provider, modelName, openApiKey, anthropicKey, ollamaUrl, temperature);
 
     // Build history strategy
     String mode = extractor.selectedSingleValue(HISTORY_MODE_ID, String.class);
@@ -210,7 +219,8 @@ public class MultiModelPromptProcessor extends StreamPipesDataProcessor {
    */
   private ChatLanguageModel buildChatModel(String provider,
                                            String modelName,
-                                           String apiKey,
+                                           String openApiKey,
+                                           String anthropicKey,
                                            String ollamaUrl,
                                            Double temperature) throws SpRuntimeException {
 
@@ -218,17 +228,17 @@ public class MultiModelPromptProcessor extends StreamPipesDataProcessor {
 
     return switch (provider) {
       case PROVIDER_OPENAI -> {
-        requireNonBlank(apiKey, "API key is required for OpenAI");
+        requireNonBlank(openApiKey, "API key is required for OpenAI");
         yield OpenAiChatModel.builder()
-                .apiKey(apiKey)
+                .apiKey(openApiKey)
                 .modelName(modelName)
                 .temperature(temperature)
                 .build();
       }
       case PROVIDER_ANTHROPIC -> {
-        requireNonBlank(apiKey, "API key is required for Anthropic");
+        requireNonBlank(anthropicKey, "API key is required for Anthropic");
         yield AnthropicChatModel.builder()
-                .apiKey(apiKey)
+                .apiKey(anthropicKey)
                 .modelName(modelName)
                 .temperature(temperature)
                 .build();

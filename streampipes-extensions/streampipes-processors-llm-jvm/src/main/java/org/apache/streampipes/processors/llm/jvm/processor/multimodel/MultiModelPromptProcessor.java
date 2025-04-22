@@ -133,7 +133,7 @@ public class MultiModelPromptProcessor extends StreamPipesDataProcessor {
                     Labels.withId(HISTORY_MODE_ID),
                     Options.from(STATELESS, WINDOWED, FULL))
             .requiredIntegerParameter(
-                    Labels.withId(WINDOW_SIZE_ID), 1, 100, 1)
+                    Labels.withId(WINDOW_SIZE_ID), 0, 100, 1)
 
             // Output mapping
             .outputStrategy(OutputStrategies.append(

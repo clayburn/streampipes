@@ -57,8 +57,12 @@ import dev.langchain4j.model.openai.OpenAiChatModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Processor that calls an LLM (OpenAI, Anthropic, or Ollama) and appends the
@@ -90,7 +94,7 @@ public class MultiModelPromptProcessor extends StreamPipesDataProcessor {
   // Runtime state
   private ChatLanguageModel chatModel;
   private ChatContext chatContext;
-  private String inputFieldSelector;
+  private Set<String> inputFieldSelectors;
 
   /* Simple null / blank guard */
   private static void requireNonBlank(String value, String message) throws SpRuntimeException {
@@ -111,7 +115,7 @@ public class MultiModelPromptProcessor extends StreamPipesDataProcessor {
 
             // Input mapping
             .requiredStream(StreamRequirementsBuilder.create()
-                    .requiredPropertyWithUnaryMapping(EpRequirements.anyProperty(),
+                    .requiredPropertyWithNaryMapping(EpRequirements.anyProperty(),
                             Labels.withId(MAPPING_INPUT_ID),
                             PropertyScope.NONE)
                     .build())
@@ -157,7 +161,7 @@ public class MultiModelPromptProcessor extends StreamPipesDataProcessor {
     String ollamaUrl = (PROVIDER_OLLAMA.equalsIgnoreCase(provider)
             ? extractor.singleValueParameter(OLLAMA_URL_ID, String.class) : null);
     Double temperature = extractor.singleValueParameter(TEMPERATURE, Double.class);
-    this.inputFieldSelector = extractor.mappingPropertyValue(MAPPING_INPUT_ID);
+    this.inputFieldSelectors = new HashSet<>(extractor.mappingPropertyValues(MAPPING_INPUT_ID));
 
     // Build model
     this.chatModel = buildChatModel(provider, modelName, openApiKey, anthropicKey, ollamaUrl, temperature);
@@ -187,21 +191,22 @@ public class MultiModelPromptProcessor extends StreamPipesDataProcessor {
   @Override
   public void onEvent(Event event, SpOutputCollector collector) throws SpRuntimeException {
 
-    String userInput = event
-            .getFieldBySelector(this.inputFieldSelector)
-            .getAsPrimitive()
-            .getAsString();
+    // Build user message
+    String payload = event.getFields().entrySet().stream()
+            .filter(e -> inputFieldSelectors.contains(e.getKey()))
+            .sorted(Map.Entry.comparingByKey())
+            .map(e -> e.getKey() + '=' + e.getValue().getAsPrimitive().getAsString())
+            .collect(Collectors.joining(", "));
+    UserMessage userMsg = UserMessage.from(payload);
 
-    UserMessage userMsg = UserMessage.from(userInput);
-
-    /* Build request & call LLM ------------------------------------ */
+    // Build request & call LLM
     List<ChatMessage> request = chatContext.buildRequest(userMsg);
     ChatResponse resp = chatModel.chat(ChatRequest.builder()
             .messages(request)
             .build());
     AiMessage aiMsg = resp.aiMessage();
 
-    /* Update history & emit event --------------------------------- */
+    // Update history & emit event
     chatContext.recordTurn(userMsg, aiMsg);
 
     event.addField(OUTPUT_FIELD_ID, aiMsg.text());

@@ -16,24 +16,22 @@
  *
  */
 
-package org.apache.streampipes.extensions.connectors.opcua.utils;
+package org.apache.streampipes.extensions.connectors.opcua.model.nodename;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.eclipse.milo.opcua.sdk.client.model.nodes.variables.BaseDataVariableTypeNode;
 
-public class OpcUaUtilTest {
+import java.util.function.Function;
 
-  private static final String SERVER_ADDRESS_WITH_OPC_PREFIX = "opc.tcp://example.com";
+public class SimpleNameResolver implements NamingStrategyResolver {
 
-  @Test
-  public void testAddOpcPrefixIfNotExistsWithPrefix() {
-    var result = OpcUaUtils.addOpcPrefixIfNotExists(SERVER_ADDRESS_WITH_OPC_PREFIX);
-    Assertions.assertEquals(SERVER_ADDRESS_WITH_OPC_PREFIX, result);
+  private final Function<BaseDataVariableTypeNode, String> nameFn;
+
+  public SimpleNameResolver(Function<BaseDataVariableTypeNode, String> nameFn) {
+    this.nameFn = nameFn;
   }
 
-  @Test
-  public void testAddOpcPrefixIfNotExistsNoPrefix() {
-    var result = OpcUaUtils.addOpcPrefixIfNotExists("example.com");
-    Assertions.assertEquals(SERVER_ADDRESS_WITH_OPC_PREFIX, result);
+  @Override
+  public String resolveName(BaseDataVariableTypeNode node, String fieldAppendix) {
+    return nameFn.apply(node) + (!fieldAppendix.isEmpty() ? "_" + fieldAppendix : "");
   }
 }

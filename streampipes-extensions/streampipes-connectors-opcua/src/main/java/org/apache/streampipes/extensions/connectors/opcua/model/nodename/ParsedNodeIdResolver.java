@@ -16,24 +16,21 @@
  *
  */
 
-package org.apache.streampipes.extensions.connectors.opcua.utils;
+package org.apache.streampipes.extensions.connectors.opcua.model.nodename;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.eclipse.milo.opcua.sdk.client.model.nodes.variables.BaseDataVariableTypeNode;
 
-public class OpcUaUtilTest {
+public class ParsedNodeIdResolver implements NamingStrategyResolver {
 
-  private static final String SERVER_ADDRESS_WITH_OPC_PREFIX = "opc.tcp://example.com";
-
-  @Test
-  public void testAddOpcPrefixIfNotExistsWithPrefix() {
-    var result = OpcUaUtils.addOpcPrefixIfNotExists(SERVER_ADDRESS_WITH_OPC_PREFIX);
-    Assertions.assertEquals(SERVER_ADDRESS_WITH_OPC_PREFIX, result);
+  @Override
+  public String resolveName(BaseDataVariableTypeNode node,
+                            String fieldAppendix) {
+    var nodeIdStr = node.getNodeId().toParseableString();
+    var sanitizedNodeIdStr = removeSpecialChars(nodeIdStr);
+    return sanitizedNodeIdStr + (!fieldAppendix.isEmpty() ? "_" + fieldAppendix : "");
   }
 
-  @Test
-  public void testAddOpcPrefixIfNotExistsNoPrefix() {
-    var result = OpcUaUtils.addOpcPrefixIfNotExists("example.com");
-    Assertions.assertEquals(SERVER_ADDRESS_WITH_OPC_PREFIX, result);
+  private String removeSpecialChars(String parseableNodeId) {
+    return parseableNodeId.replaceAll("[^a-zA-Z0-9]", "_");
   }
 }

@@ -16,24 +16,12 @@
  *
  */
 
-package org.apache.streampipes.extensions.connectors.opcua.utils;
+package org.apache.streampipes.extensions.connectors.opcua.model.nodename;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.eclipse.milo.opcua.sdk.client.model.nodes.variables.BaseDataVariableTypeNode;
 
-public class OpcUaUtilTest {
+public interface NamingStrategyResolver {
 
-  private static final String SERVER_ADDRESS_WITH_OPC_PREFIX = "opc.tcp://example.com";
-
-  @Test
-  public void testAddOpcPrefixIfNotExistsWithPrefix() {
-    var result = OpcUaUtils.addOpcPrefixIfNotExists(SERVER_ADDRESS_WITH_OPC_PREFIX);
-    Assertions.assertEquals(SERVER_ADDRESS_WITH_OPC_PREFIX, result);
-  }
-
-  @Test
-  public void testAddOpcPrefixIfNotExistsNoPrefix() {
-    var result = OpcUaUtils.addOpcPrefixIfNotExists("example.com");
-    Assertions.assertEquals(SERVER_ADDRESS_WITH_OPC_PREFIX, result);
-  }
+  String resolveName(BaseDataVariableTypeNode node,
+                     String fieldAppendix);
 }

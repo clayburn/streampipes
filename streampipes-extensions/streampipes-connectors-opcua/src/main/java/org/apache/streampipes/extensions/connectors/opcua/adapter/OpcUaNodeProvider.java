@@ -16,24 +16,30 @@
  *
  */
 
-package org.apache.streampipes.extensions.connectors.opcua.utils;
+package org.apache.streampipes.extensions.connectors.opcua.adapter;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.apache.streampipes.extensions.connectors.opcua.model.node.OpcUaNode;
 
-public class OpcUaUtilTest {
+import org.eclipse.milo.opcua.sdk.client.OpcUaClient;
 
-  private static final String SERVER_ADDRESS_WITH_OPC_PREFIX = "opc.tcp://example.com";
+import java.util.List;
 
-  @Test
-  public void testAddOpcPrefixIfNotExistsWithPrefix() {
-    var result = OpcUaUtils.addOpcPrefixIfNotExists(SERVER_ADDRESS_WITH_OPC_PREFIX);
-    Assertions.assertEquals(SERVER_ADDRESS_WITH_OPC_PREFIX, result);
+public class OpcUaNodeProvider {
+
+  private final List<OpcUaNode> opcUaNodes;
+
+  public OpcUaNodeProvider(List<OpcUaNode> opcUaNodes) {
+    this.opcUaNodes = opcUaNodes;
   }
 
-  @Test
-  public void testAddOpcPrefixIfNotExistsNoPrefix() {
-    var result = OpcUaUtils.addOpcPrefixIfNotExists("example.com");
-    Assertions.assertEquals(SERVER_ADDRESS_WITH_OPC_PREFIX, result);
+  public List<OpcUaNode> getNodes() {
+    return opcUaNodes;
+  }
+
+  public int getNumberOfEventProperties(OpcUaClient client) {
+    return opcUaNodes
+        .stream()
+        .mapToInt(n -> n.getNumberOfEventProperties(client))
+        .sum();
   }
 }

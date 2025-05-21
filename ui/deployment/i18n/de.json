@@ -155,6 +155,7 @@
   "Edit chart": "Diagramm bearbeiten",
   "Manage permissions": "Berechtigungen verwalten",
   "Delete chart": "Diagramm löschen",
+  "Clone chart": "Diagramm kopieren",
   "Chart Name": "Diagrammname",
   "Save": "Speichern",
   "Discard": "Verwerfen",
@@ -287,8 +288,6 @@
   "Authorized Groups": "Autorisierte Gruppen",
   "Group selection": "Auswahl der Gruppe",
   "(no log messages available)": "(keine Protokollmeldungen verfügbar)",
-  "Site label is required": "Standort-Label ist erforderlich",
-  "This site already exists": "Standort existiert bereits",
   "success": "Erfolg",
   "error": "Fehler",
   "waiting": "Warten",
@@ -412,5 +411,6 @@
   "30 min": "30 Minuten",
   "Error Details": "Fehler-Details",
   "Resources": "Ressourcen",
-  "All {{allResourcesAlias}}": "Alle {{allResourcesAlias}}"
+  "All {{allResourcesAlias}}": "Alle {{allResourcesAlias}}",
+  "{{ widgetTitle }} Clone": "{{ widgetTitle }} Kopie"
 }

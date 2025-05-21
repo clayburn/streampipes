@@ -16,17 +16,28 @@
  *
  */
 
-import { Component, Input } from '@angular/core';
-import { AssetSiteDesc, LocationConfig } from '@streampipes/platform-services';
+import { Component, Input, OnInit } from '@angular/core';
+import { EventPropertyUnion } from '@streampipes/platform-services';
+import { PipelineElementSchemaService } from '../../../services/pipeline-element-schema.service';
 
 @Component({
-    selector: 'sp-edit-asset-location-component',
-    templateUrl: './edit-location.component.html',
+    selector: 'sp-input-schema-property',
+    templateUrl: './input-schema-property.component.html',
 })
-export class EditAssetLocationComponent {
+export class InputSchemaPropertyComponent implements OnInit {
     @Input()
-    site: AssetSiteDesc;
+    property: EventPropertyUnion;
 
-    @Input()
-    locationConfig: LocationConfig;
+    runtimeType: string;
+
+    constructor(
+        private pipelineElementSchemaService: PipelineElementSchemaService,
+    ) {}
+
+    ngOnInit() {
+        this.runtimeType =
+            this.pipelineElementSchemaService.getFriendlyRuntimeType(
+                this.property,
+            );
+    }
 }

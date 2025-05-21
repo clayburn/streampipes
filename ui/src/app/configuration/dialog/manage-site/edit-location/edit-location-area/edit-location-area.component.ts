@@ -16,45 +16,25 @@
  *
  */
 
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { AssetSiteDesc } from '@streampipes/platform-services';
-import { FormControl, FormGroup } from '@angular/forms';
-import { checkForDuplicatesValidator } from '../../../../../core-ui/static-properties/input.validator';
 
 @Component({
     selector: 'sp-edit-asset-location-area-component',
     templateUrl: './edit-location-area.component.html',
     styleUrls: ['./edit-location-area.component.scss'],
 })
-export class EditAssetLocationAreaComponent implements OnInit {
+export class EditAssetLocationAreaComponent {
     @Input()
     site: AssetSiteDesc;
 
-    areaControlGroup: FormGroup;
-
-    ngOnInit(): void {
-        this.areaControlGroup = new FormGroup({
-            areaControl: new FormControl('', [
-                checkForDuplicatesValidator(() => this.site.areas),
-            ]),
-        });
-    }
+    newArea: string = '';
 
     addNewArea(): void {
-        this.site.areas.push(this.areaControlGroup.get('areaControl').value);
-        this.areaControlGroup.get('areaControl').reset();
+        this.site.areas.push(this.newArea);
     }
 
     removeArea(area: string): void {
         this.site.areas.splice(this.site.areas.indexOf(area), 1);
-    }
-
-    get isAddAreaDisabled(): boolean {
-        const value = this.areaControlGroup.get('areaControl')?.value;
-        const trimmedValue = value?.trim();
-        return (
-            !trimmedValue ||
-            this.areaControlGroup.get('areaControl').hasError('forbiddenName')
-        );
     }
 }

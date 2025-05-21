@@ -17,16 +17,31 @@
  */
 
 import { Component, Input } from '@angular/core';
-import { AssetSiteDesc, LocationConfig } from '@streampipes/platform-services';
+import { EventSchema } from '@streampipes/platform-services';
+import { RuntimeInfo } from '../pipeline-element-runtime-info.model';
 
 @Component({
-    selector: 'sp-edit-asset-location-component',
-    templateUrl: './edit-location.component.html',
+    selector: 'sp-live-preview-table',
+    templateUrl: './live-preview-table.component.html',
+    styleUrls: ['./live-preview-table.component.scss'],
 })
-export class EditAssetLocationComponent {
+export class LivePreviewTableComponent {
     @Input()
-    site: AssetSiteDesc;
+    eventSchema: EventSchema;
 
     @Input()
-    locationConfig: LocationConfig;
+    runtimeInfo: RuntimeInfo[];
+
+    @Input()
+    showTitle = true;
+
+    displayedColumns: string[] = [
+        'runtimeName',
+        'label',
+        'description',
+        'runtimeType',
+        'value',
+    ];
+
+    constructor() {}
 }

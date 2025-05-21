@@ -16,12 +16,7 @@
   ~
   -->
 
-<div
-    fxLayout="column"
-    class="w-100"
-    fxLayoutGap="10px"
-    [formGroup]="areaControlGroup"
->
+<div fxLayout="column" class="w-100" fxLayoutGap="10px">
     <div
         *ngFor="let area of site.areas; let i = index"
         fxLayout="row"
@@ -55,25 +50,16 @@
                 <input
                     data-cy="sites-dialog-new-area-input"
                     matInput
-                    formControlName="areaControl"
+                    [(ngModel)]="newArea"
                 />
-                <mat-error
-                    *ngIf="
-                        areaControlGroup
-                            .get('areaControl')
-                            .hasError('forbiddenName')
-                    "
-                    >{{ 'This site already exists' | translate }}</mat-error
-                >
             </mat-form-field>
         </div>
         <div fxLayoutAlign="end center">
             <button
                 data-cy="sites-dialog-add-area-button"
                 mat-icon-button
-                class="custom-icon-button"
+                color="accent"
                 (click)="addNewArea()"
-                [disabled]="isAddAreaDisabled"
             >
                 <mat-icon>add</mat-icon>
             </button>

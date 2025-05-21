@@ -36,13 +36,10 @@ import {
     PipelineElementConfig,
     PipelineElementUnion,
 } from '../model/editor.model';
-import {
-    DialogService,
-    PanelType,
-    PipelineElementHelpComponent,
-} from '@streampipes/shared-ui';
+import { DialogService, PanelType } from '@streampipes/shared-ui';
 import { map } from 'rxjs/operators';
 import { NGX_LOADING_BAR_IGNORED } from '@ngx-loading-bar/http-client';
+import { HelpComponent } from '../../core-ui/help/help.component';
 import { TopicsComponent } from 'src/app/core-ui/topics/topics.component';
 
 @Injectable({ providedIn: 'root' })
@@ -169,7 +166,7 @@ export class EditorService {
     }
 
     openHelpDialog(pipelineElement: PipelineElementUnion) {
-        this.dialogService.open(PipelineElementHelpComponent, {
+        this.dialogService.open(HelpComponent, {
             panelType: PanelType.STANDARD_PANEL,
             title: pipelineElement.name,
             width: '70vw',

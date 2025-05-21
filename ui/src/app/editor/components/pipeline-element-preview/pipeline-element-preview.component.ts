@@ -19,10 +19,8 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { KeyValue } from '@angular/common';
-import {
-    LivePreviewService,
-    PipelinePreviewModel,
-} from '@streampipes/platform-services';
+import { LivePreviewService } from '../../../services/live-preview.service';
+import { PipelinePreviewModel } from '@streampipes/platform-services';
 
 @Component({
     selector: 'sp-pipeline-element-preview',

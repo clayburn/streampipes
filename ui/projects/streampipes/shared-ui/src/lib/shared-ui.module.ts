@@ -83,19 +83,6 @@ import { DateInputComponent } from './components/date-input/date-input.component
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { TranslateModule } from '@ngx-translate/core';
-import { LivePreviewLoadingComponent } from './components/pipeline-element-runtime-info/live-preview-loading/live-preview-loading.component';
-import { LivePreviewTableComponent } from './components/pipeline-element-runtime-info/live-preview-table/live-preview-table.component';
-import { LivePreviewErrorComponent } from './components/pipeline-element-runtime-info/live-preview-error/live-preview-error.component';
-import { PipelineElementRuntimeInfoComponent } from './components/pipeline-element-runtime-info/pipeline-element-runtime-info.component';
-import { PipelineElementDocumentationComponent } from './components/pipeline-element-documentation/pipeline-element-documentation.component';
-import { MarkdownModule } from 'ngx-markdown';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { PipelineElementHelpComponent } from './dialog/pipeline-element-help/pipeline-element-help.component';
-import { PipelineElementComponent } from './components/pipeline-element/pipeline-element.component';
-import { InputSchemaPanelComponent } from './components/input-schema-panel/input-schema-panel.component';
-import { InputSchemaPropertyComponent } from './components/input-schema-panel/input-schema-property/input-schema-property.component';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { SortByRuntimeNamePipe } from './pipes/sort-by-runtime-name.pipe';
 
 @NgModule({
     declarations: [
@@ -136,16 +123,6 @@ import { SortByRuntimeNamePipe } from './pipes/sort-by-runtime-name.pipe';
         SpConfigurationBoxComponent,
         SelectDataRangeComponent,
         SelectDataMissingValuesComponent,
-        LivePreviewLoadingComponent,
-        LivePreviewTableComponent,
-        LivePreviewErrorComponent,
-        PipelineElementRuntimeInfoComponent,
-        PipelineElementDocumentationComponent,
-        PipelineElementHelpComponent,
-        PipelineElementComponent,
-        InputSchemaPanelComponent,
-        InputSchemaPropertyComponent,
-        SortByRuntimeNamePipe,
     ],
     imports: [
         CommonModule,
@@ -163,7 +140,6 @@ import { SortByRuntimeNamePipe } from './pipes/sort-by-runtime-name.pipe';
         MatTooltipModule,
         MatTreeModule,
         MatDatepickerModule,
-        MatExpansionModule,
         MatCardModule,
         PortalModule,
         OverlayModule,
@@ -172,16 +148,10 @@ import { SortByRuntimeNamePipe } from './pipes/sort-by-runtime-name.pipe';
         MatTableModule,
         MatPaginator,
         MatRadioModule,
-        MatProgressSpinnerModule,
         MatSort,
         TranslateModule.forChild({}),
-        MarkdownModule.forRoot(),
     ],
-    providers: [
-        DefaultMatCalendarRangeStrategy,
-        MatRangeDateSelectionModel,
-        SortByRuntimeNamePipe,
-    ],
+    providers: [DefaultMatCalendarRangeStrategy, MatRangeDateSelectionModel],
     exports: [
         AssetBrowserComponent,
         ConfirmDialogComponent,
@@ -206,11 +176,6 @@ import { SortByRuntimeNamePipe } from './pipes/sort-by-runtime-name.pipe';
         TimeRangeSelectorComponent,
         TimeRangeSelectorMenuComponent,
         DataExplorerRefreshIntervalSettingsComponent,
-        PipelineElementRuntimeInfoComponent,
-        PipelineElementDocumentationComponent,
-        PipelineElementHelpComponent,
-        PipelineElementComponent,
-        InputSchemaPanelComponent,
     ],
 })
 export class SharedUiModule {}

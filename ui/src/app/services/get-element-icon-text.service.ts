@@ -16,10 +16,24 @@
  *
  */
 
-package org.apache.streampipes.sinks.brokers.jvm.rest;
+import { Injectable } from '@angular/core';
 
-public record RestHeaderConfiguration(
-    String headerKey,
-    String headerValue
-) {
+@Injectable({ providedIn: 'root' })
+export class ElementIconText {
+    constructor() {}
+
+    getElementIconText(s) {
+        let result = '';
+        if (s.length <= 3) {
+            result = s;
+        } else {
+            const words = s.split(' ');
+            words.forEach((word, i) => {
+                if (i < 3) {
+                    result += word.charAt(0);
+                }
+            });
+        }
+        return result.toUpperCase();
+    }
 }

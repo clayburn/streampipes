@@ -40,6 +40,7 @@ public class SchemaEventTransformerTest {
     rules.add(new RenameTransformationRule(List.of("b"), "b1"));
     rules.add(new RenameTransformationRule(List.of("c"), "c1"));
     rules.add(new RenameTransformationRule(List.of("c1", "d"), "d1"));
+    rules.add(new CreateNestedTransformationRule(List.of("c1", "f")));
     rules.add(new MoveTransformationRule(List.of("b1"), List.of("c1", "f")));
     rules.add(new DeleteTransformationRule(List.of("e")));
 
@@ -48,19 +49,19 @@ public class SchemaEventTransformerTest {
     }
 
     Assertions.assertEquals(2,
-                            result.size());
+                            result.keySet().size());
     Assertions.assertTrue(result.containsKey("a1"));
     Assertions.assertTrue(result.containsKey("c1"));
 
     Map<String, Object> nested = ((Map<String, Object>) result.get("c1"));
 
     Assertions.assertEquals(2,
-                            nested.size());
+                            nested.keySet().size());
     Assertions.assertTrue(nested.containsKey("f"));
 
     nested = (Map<String, Object>) nested.get("f");
     Assertions.assertEquals(1,
-                            nested.size());
+                            nested.keySet().size());
     Assertions.assertEquals("z", nested.get("b1"));
 
   }

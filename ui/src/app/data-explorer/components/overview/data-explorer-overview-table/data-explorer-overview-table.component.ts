@@ -131,12 +131,6 @@ export class SpDataExplorerDataViewOverviewComponent extends SpDataExplorerOverv
         });
     }
 
-    cloneDataView(dataView: DataExplorerWidgetModel) {
-        this.dataViewService.cloneChart(dataView).subscribe(() => {
-            this.getDataViews();
-        });
-    }
-
     applyChartFilters(elementIds: Set<string> = new Set<string>()): void {
         if (elementIds.size == 0) {
             this.filteredCharts = this.charts;

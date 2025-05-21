@@ -1,4 +1,4 @@
-/*!
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -16,26 +16,36 @@
  *
  */
 
-.mat-expansion-panel {
-    box-shadow: none;
-    border: 1px solid var(--color-bg-3);
-}
+import { Component, Input } from '@angular/core';
+import {
+    DataType,
+    EventSchema,
+    SemanticType,
+} from '@streampipes/platform-services';
+import { RuntimeInfo } from '../pipeline-element-runtime-info.model';
 
-.property-row {
-    padding: 10px;
-    background-color: var(--color-bg-1);
-}
+@Component({
+    selector: 'sp-live-preview-table',
+    templateUrl: './live-preview-table.component.html',
+    styleUrls: ['./live-preview-table.component.scss'],
+})
+export class LivePreviewTableComponent {
+    @Input()
+    eventSchema: EventSchema;
 
-.property-row:nth-child(even) {
-    background-color: var(--color-bg-2);
-}
+    @Input()
+    runtimeInfo: RuntimeInfo[];
 
-.input-stream-name-outer {
-    background: var(--color-accent);
-    padding: 5px;
-    width: 100%;
-}
+    @Input()
+    showTitle = true;
 
-.input-stream-name {
-    color: var(--color-bg-0);
+    displayedColumns: string[] = [
+        'runtimeName',
+        'label',
+        'description',
+        'runtimeType',
+        'value',
+    ];
+
+    constructor() {}
 }

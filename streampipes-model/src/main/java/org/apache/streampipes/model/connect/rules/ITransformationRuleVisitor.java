@@ -18,6 +18,7 @@
 
 package org.apache.streampipes.model.connect.rules;
 
+import org.apache.streampipes.model.connect.rules.schema.CreateNestedRuleDescription;
 import org.apache.streampipes.model.connect.rules.schema.DeleteRuleDescription;
 import org.apache.streampipes.model.connect.rules.schema.MoveRuleDescription;
 import org.apache.streampipes.model.connect.rules.schema.RenameRuleDescription;
@@ -32,6 +33,8 @@ import org.apache.streampipes.model.connect.rules.value.TimestampTranfsformation
 import org.apache.streampipes.model.connect.rules.value.UnitTransformRuleDescription;
 
 public interface ITransformationRuleVisitor {
+
+  void visit(CreateNestedRuleDescription rule);
 
   void visit(DeleteRuleDescription rule);
 

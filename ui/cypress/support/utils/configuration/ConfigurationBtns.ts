@@ -31,16 +31,4 @@ export class ConfigurationBtns {
     public static generalConfigSaveBtn() {
         return cy.dataCy('sp-element-general-config-save');
     }
-
-    public static newUserGroupBtn() {
-        return cy.dataCy('new-user-group-btn');
-    }
-
-    public static authorizedGroupsLabel() {
-        return cy.dataCy('authorized-groups-label');
-    }
-
-    public static inputGroupName(groupName: string) {
-        return cy.dataCy('group-name-input').type(groupName);
-    }
 }

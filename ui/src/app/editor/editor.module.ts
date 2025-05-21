@@ -25,6 +25,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EditorComponent } from './editor.component';
 import { PipelineElementIconStandComponent } from './components/pipeline-element-icon-stand/pipeline-element-icon-stand.component';
 import { PipelineAssemblyComponent } from './components/pipeline-assembly/pipeline-assembly.component';
+import { PipelineElementComponent } from './components/pipeline-element/pipeline-element.component';
 import { PipelineComponent } from './components/pipeline/pipeline.component';
 import { PipelineElementOptionsComponent } from './components/pipeline-element-options/pipeline-element-options.component';
 import { CustomizeComponent } from './dialog/customize/customize.component';
@@ -80,9 +81,11 @@ import { PipelineAssemblyOptionsPipelineCacheComponent } from './components/pipe
 import { PipelineAssemblyDrawingAreaPanZoomComponent } from './components/pipeline-assembly/pipeline-assembly-drawing-area/pipeline-assembly-drawing-area-pan-zoom/pipeline-assembly-drawing-area-pan-zoom.component';
 import { PipelineAssemblyDrawingAreaComponent } from './components/pipeline-assembly/pipeline-assembly-drawing-area/pipeline-assembly-drawing-area.component';
 import { DroppedPipelineElementComponent } from './components/pipeline/dropped-pipeline-element/dropped-pipeline-element.component';
+import { InputSchemaPanelComponent } from './dialog/customize/input-schema-panel/input-schema-panel.component';
+import { InputSchemaPropertyComponent } from './dialog/customize/input-schema-panel/input-schema-property/input-schema-property.component';
+import { SortByRuntimeNamePipe } from './pipes/sort-by-runtime-name.pipe';
 import { AddTemplateDialogComponent } from './dialog/add-template-dialog/add-template-dialog.component';
 import { TemplateSelectionComponent } from './dialog/add-template-dialog/template-selection/template-selection.component';
-import { SharedUiModule } from '@streampipes/shared-ui';
 
 @NgModule({
     imports: [
@@ -122,7 +125,6 @@ import { SharedUiModule } from '@streampipes/shared-ui';
         MatProgressSpinnerModule,
         ReactiveFormsModule,
         PlatformServicesModule,
-        SharedUiModule,
     ],
     declarations: [
         AddTemplateDialogComponent,
@@ -132,6 +134,8 @@ import { SharedUiModule } from '@streampipes/shared-ui';
         DroppedPipelineElementComponent,
         EditorComponent,
         EnabledPipelineElementFilter,
+        InputSchemaPanelComponent,
+        InputSchemaPropertyComponent,
         MatchingErrorComponent,
         MissingElementsForTutorialComponent,
         OutputStrategyComponent,
@@ -141,6 +145,7 @@ import { SharedUiModule } from '@streampipes/shared-ui';
         PipelineAssemblyDrawingAreaPanZoomComponent,
         PipelineAssemblyOptionsComponent,
         PipelineAssemblyOptionsPipelineCacheComponent,
+        PipelineElementComponent,
         PipelineElementDiscoveryComponent,
         PipelineElementIconStandComponent,
         PipelineElementIconStandRowComponent,
@@ -156,12 +161,14 @@ import { SharedUiModule } from '@streampipes/shared-ui';
         TemplateSelectionComponent,
         SavePipelineComponent,
         SavePipelineSettingsComponent,
+        SortByRuntimeNamePipe,
         SafeCss,
     ],
-    providers: [SafeCss],
+    providers: [SafeCss, SortByRuntimeNamePipe],
     exports: [
         EditorComponent,
         PipelineComponent,
+        PipelineElementComponent,
         PipelineAssemblyDrawingAreaComponent,
     ],
 })

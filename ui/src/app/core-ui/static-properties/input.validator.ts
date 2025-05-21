@@ -50,6 +50,21 @@ export function ValidateString(control: AbstractControl) {
     return null;
 }
 
+export function checkForDuplicatesValidator(
+    getExistingNames: () => string[],
+): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+        if (!control.value || typeof control.value !== 'string') {
+            return null;
+        }
+        const existingNames = getExistingNames();
+
+        const isDuplicate = existingNames.includes(control.value);
+
+        return isDuplicate ? { forbiddenName: { value: control.value } } : null;
+    };
+}
+
 export function ValidateName(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
         const value = control.value;

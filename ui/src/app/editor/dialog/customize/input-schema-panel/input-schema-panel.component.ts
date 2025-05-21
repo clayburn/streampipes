@@ -16,14 +16,18 @@
  *
  */
 
-@import '../../../../../../../src/scss/sp/sp-dialog';
+import { Component, Input } from '@angular/core';
+import {
+    DataProcessorInvocation,
+    DataSinkInvocation,
+} from '@streampipes/platform-services';
 
-.element-id {
-    border-radius: 5px;
-    margin-right: 10px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    font-size: small;
-    display: inline-block;
-    padding: 5px;
+@Component({
+    selector: 'sp-input-schema-panel',
+    templateUrl: './input-schema-panel.component.html',
+    styleUrls: ['./input-schema-panel.component.scss'],
+})
+export class InputSchemaPanelComponent {
+    @Input()
+    pipelineElement: DataProcessorInvocation | DataSinkInvocation;
 }

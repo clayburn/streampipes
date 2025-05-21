@@ -34,8 +34,6 @@ module.exports = withNativeFederation({
                 '@angular/platform-browser-dynamic',
                 '@angular/router',
                 '@angular/cdk',
-                '@ngx-loading-bar/core',
-                '@ngx-loading-bar/http-client',
                 '@angular/material',
                 'echarts',
                 'ngx-echarts',

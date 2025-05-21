@@ -25,7 +25,6 @@ import { PipelineElementBuilder } from '../../support/builder/PipelineElementBui
 import { PipelineBuilder } from '../../support/builder/PipelineBuilder';
 import { PermissionUtils } from '../../support/utils/user/PermissionUtils';
 import { NavigationUtils } from '../../support/utils/navigation/NavigationUtils';
-import { ConfigurationBtns } from '../../support/utils/configuration/ConfigurationBtns';
 
 describe('Test Group Management for Pipelines', () => {
     beforeEach('Setup Test', () => {
@@ -85,8 +84,8 @@ describe('Test Group Management for Pipelines', () => {
         );
 
         // Add new user group with pipeline admin role
-        ConfigurationBtns.newUserGroupBtn().click();
-        ConfigurationBtns.inputGroupName('User_Group');
+        cy.get('button').contains('New User Group').click();
+        cy.get('label').contains('Group Name').type('User_Group');
         cy.get('input[value="ROLE_PIPELINE_ADMIN"]').check();
         cy.dataCy('sp-element-edit-user-save').click();
 
@@ -98,7 +97,7 @@ describe('Test Group Management for Pipelines', () => {
         // Add user group to pipeline
         PipelineUtils.goToPipelines();
         PermissionUtils.openManagePermissions();
-        ConfigurationBtns.authorizedGroupsLabel().click();
+        cy.get('label').contains('Authorized Groups').click();
         cy.get('mat-option').contains('User_Group').click();
         PermissionUtils.save();
 
@@ -111,14 +110,26 @@ describe('Test Group Management for Pipelines', () => {
         ]);
 
         // Check if pipeline is visible
-        PipelineUtils.checkAmountOfPipelinesPipeline(1);
+        PipelineUtils.goToPipelines();
+        cy.dataCy('all-pipelines-table', { timeout: 10000 }).should(
+            'have.length',
+            1,
+        );
+        cy.dataCy('all-pipelines-table', { timeout: 10000 }).should(
+            'contain',
+            'Pipeline Test',
+        );
 
         // Login as user2
         UserUtils.switchUser(user2);
         NavigationUtils.validateActiveModules([NavigationUtils.PIPELINES]);
 
         // Check if pipeline is invisible to user2
-        PipelineUtils.checkAmountOfPipelinesPipeline(0);
+        PipelineUtils.goToPipelines();
+        cy.get('sp-pipeline-overview', { timeout: 10000 }).should(
+            'contain',
+            'No entries available',
+        );
 
         // Log in as admin and delete users
         UserUtils.switchUser(UserUtils.adminUser);

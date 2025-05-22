@@ -288,6 +288,8 @@
   "Authorized Groups": "Autorisierte Gruppen",
   "Group selection": "Auswahl der Gruppe",
   "(no log messages available)": "(keine Protokollmeldungen verfügbar)",
+  "Site label is required": "Standort-Label ist erforderlich",
+  "This site already exists": "Standort existiert bereits",
   "success": "Erfolg",
   "error": "Fehler",
   "waiting": "Warten",

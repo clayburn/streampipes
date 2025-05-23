@@ -16,7 +16,14 @@
  *
  */
 
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    inject,
+    OnInit,
+    signal,
+    ViewChild,
+} from '@angular/core';
 import {
     ChartService,
     DataExplorerWidgetModel,
@@ -40,6 +47,7 @@ import { Observable, of } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { map } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
+import { ResizeEchartsService } from '../../../data-explorer-shared/services/resize-echarts.service';
 
 @Component({
     selector: 'sp-data-explorer-data-view',
@@ -57,6 +65,10 @@ export class DataExplorerChartViewComponent
     originalDataView: DataExplorerWidgetModel;
     dataLakeMeasure: DataLakeMeasure;
     gridsterItemComponent: any;
+    drawerWidth = 450;
+    panelWidth = '100%';
+
+    resizeEchartsService = inject(ResizeEchartsService);
 
     @ViewChild('panel', { static: false }) outerPanel: ElementRef;
 
@@ -224,5 +236,14 @@ export class DataExplorerChartViewComponent
             this.timeSettings,
             this.dataView,
         );
+    }
+
+    onWidthChanged(newWidth: number) {
+        this.drawerWidth = newWidth;
+        setTimeout(() => {
+            this.resizeEchartsService.notify(
+                this.outerPanel.nativeElement.offsetWidth,
+            );
+        }, 100);
     }
 }

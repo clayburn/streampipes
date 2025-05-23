@@ -1,4 +1,4 @@
-/*
+/*!
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -16,47 +16,46 @@
  *
  */
 
-.fixed-height {
-    height: 50px;
-}
-
-.data-explorer-options {
-    padding: 0px;
-}
-
-.data-explorer-options-item {
-    display: inline;
-    margin-right: 10px;
-}
-
-.m-20 {
-    margin: 20px;
-}
-
-.h-100 {
+.resizer {
+    width: 6px;
+    cursor: ew-resize;
+    background: rgba(0, 0, 0, 0.1);
     height: 100%;
-}
-
-.dashboard-grid {
+    position: absolute;
+    z-index: 10;
     display: flex;
-    flex-direction: column;
-    flex: 1 1 100%;
+    align-items: center;
+    justify-content: center;
+    &:hover {
+        background-color: #aaa;
+    }
 }
 
-.designer-panel-container {
+.drag-icon {
+    font-size: 10px;
+    color: #555;
+}
+
+.ghost-bar {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: var(--color-bg-3);
+    z-index: 100;
+    pointer-events: none;
+}
+
+.outer-container {
+    position: relative;
     width: 100%;
     height: 100%;
 }
 
-.designer-panel {
-    border: 1px solid var(--color-tab-border);
-    width: auto;
-    flex: 0 0 auto;
-    display: inline-block;
-    overflow-x: hidden;
-}
-
-.widget-title-text {
-    white-space: nowrap;
-    margin-right: 12px;
+.resize-container {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
 }

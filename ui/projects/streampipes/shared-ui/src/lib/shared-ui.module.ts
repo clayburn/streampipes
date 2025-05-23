@@ -65,6 +65,7 @@ import { TimeRangeSelectorComponent } from './components/time-selector/time-rang
 import { TimeRangeSelectorMenuComponent } from './components/time-selector/time-selector-menu/time-selector-menu.component';
 import { CustomTimeRangeSelectionComponent } from './components/time-selector/time-selector-menu/custom-time-range-selection/custom-time-range-selection.component';
 import { DataExplorerRefreshIntervalSettingsComponent } from './components/time-selector/refresh-interval-settings/refresh-interval-settings.component';
+import { SidebarResizeComponent } from './components/sidebar-resize/sidebar-resize.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatMenuModule } from '@angular/material/menu';
@@ -96,6 +97,7 @@ import { InputSchemaPanelComponent } from './components/input-schema-panel/input
 import { InputSchemaPropertyComponent } from './components/input-schema-panel/input-schema-property/input-schema-property.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { SortByRuntimeNamePipe } from './pipes/sort-by-runtime-name.pipe';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
     declarations: [
@@ -136,6 +138,7 @@ import { SortByRuntimeNamePipe } from './pipes/sort-by-runtime-name.pipe';
         SpConfigurationBoxComponent,
         SelectDataRangeComponent,
         SelectDataMissingValuesComponent,
+        SidebarResizeComponent,
         LivePreviewLoadingComponent,
         LivePreviewTableComponent,
         LivePreviewErrorComponent,
@@ -175,6 +178,7 @@ import { SortByRuntimeNamePipe } from './pipes/sort-by-runtime-name.pipe';
         MatProgressSpinnerModule,
         MatSort,
         TranslateModule.forChild({}),
+        DragDropModule,
         MarkdownModule.forRoot(),
     ],
     providers: [
@@ -211,6 +215,7 @@ import { SortByRuntimeNamePipe } from './pipes/sort-by-runtime-name.pipe';
         PipelineElementHelpComponent,
         PipelineElementComponent,
         InputSchemaPanelComponent,
+        SidebarResizeComponent,
     ],
 })
 export class SharedUiModule {}

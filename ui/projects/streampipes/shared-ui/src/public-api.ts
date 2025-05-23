@@ -52,6 +52,7 @@ export * from './lib/components/pipeline-element-runtime-info/pipeline-element-r
 export * from './lib/components/pipeline-element-documentation/pipeline-element-documentation.component';
 export * from './lib/components/pipeline-element/pipeline-element.component';
 export * from './lib/components/input-schema-panel/input-schema-panel.component';
+export * from './lib/components/sidebar-resize/sidebar-resize.component';
 
 export * from './lib/models/sp-navigation.model';
 

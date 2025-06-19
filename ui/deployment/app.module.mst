@@ -57,6 +57,7 @@ import { MapTransform } from './core-ui/echarts-transform/map.transform';
 import { MarkdownModule } from 'ngx-markdown';
 
 import * as echarts from 'echarts';
+import 'echarts-gl';
 import * as transform from 'echarts-simple-transform';
 
 echarts.registerTransform(transform.aggregate);

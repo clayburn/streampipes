@@ -60,6 +60,8 @@ import { TrafficLightWidgetComponent } from '../components/charts/traffic-light/
 import { StatusWidgetConfigComponent } from '../components/charts/status/config/status-widget-config.component';
 import { StatusWidgetComponent } from '../components/charts/status/status-widget.component';
 import { TranslateService } from '@ngx-translate/core';
+import { TimeSeries3dWidgetConfigComponent } from '../components/charts/time-series-3d/config/time-series-3d-widget-config.component';
+import { TimeSeries3dWidgetComponent } from '../components/charts/time-series-3d/time-series-3d-widget.component';
 
 @Injectable({ providedIn: 'root' })
 export class DataExplorerChartRegistry {
@@ -158,6 +160,18 @@ export class DataExplorerChartRegistry {
                 icon: 'view_column',
                 description: this.translateService.instant(
                     'A heatmap that lets you map specific values to a color',
+                ),
+            },
+            {
+                id: 'time-series-3d',
+                label: '3D Time-Series Chart',
+                widgetAppearanceConfigurationComponent:
+                    SpEchartsWidgetAppearanceConfigComponent,
+                widgetConfigurationComponent: TimeSeries3dWidgetConfigComponent,
+                widgetComponent: TimeSeries3dWidgetComponent,
+                icon: 'view_column',
+                description: this.translateService.instant(
+                    'A 3D time-series chart chart that renders each dimension in its own space',
                 ),
             },
             {

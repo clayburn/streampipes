@@ -98,6 +98,8 @@ import { SpTimeSeriesAppearanceConfigComponent } from './components/charts/time-
 import { SpDataZoomConfigComponent } from './components/chart-config/data-zoom-config/data-zoom-config.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { ColorMappingOptionsConfigComponent } from './components/chart-config/color-mapping-options-config/color-mapping-options-config.component';
+import { TimeSeries3dWidgetConfigComponent } from './components/charts/time-series-3d/config/time-series-3d-widget-config.component';
+import { TimeSeries3dWidgetComponent } from './components/charts/time-series-3d/time-series-3d-widget.component';
 
 @NgModule({
     imports: [
@@ -186,6 +188,8 @@ import { ColorMappingOptionsConfigComponent } from './components/chart-config/co
         SpTimeSeriesAppearanceConfigComponent,
         SpDataZoomConfigComponent,
         ColorMappingOptionsConfigComponent,
+        TimeSeries3dWidgetConfigComponent,
+        TimeSeries3dWidgetComponent,
     ],
     exports: [DataExplorerChartContainerComponent],
 })

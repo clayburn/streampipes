@@ -18,6 +18,7 @@
 
 @use '@angular/material' as mat;
 @use '../_variables' as sp;
+@use 'theme-colors' as mat3theme;
 
 @include mat.elevation-classes();
 @include mat.app-background();
@@ -164,6 +165,16 @@ $custom-theme-dark: mat.m2-define-light-theme(
         density: -1,
     )
 );
+
+html {
+    color-scheme: light;
+    @include mat.theme(
+        (
+            color: mat3theme.$primary-palette,
+        ),
+        $overrides: ()
+    );
+}
 
 $primary: map-get($custom-theme-light, primary);
 $accent-dark: map-get($custom-theme-dark, accent);

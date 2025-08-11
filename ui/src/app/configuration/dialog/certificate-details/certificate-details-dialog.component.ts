@@ -16,17 +16,24 @@
  *
  */
 
-package org.apache.streampipes.client.api;
+import { Component, inject, Input } from '@angular/core';
+import { DialogRef } from '@streampipes/shared-ui';
+import { Certificate } from '@streampipes/platform-services';
 
-import java.util.List;
-import java.util.Map;
+@Component({
+    selector: 'sp-certificate-details-dialog',
+    templateUrl: './certificate-details-dialog.component.html',
+    standalone: false,
+})
+export class CertificateDetailsDialogComponent {
+    dialogRef = inject(DialogRef<CertificateDetailsDialogComponent>);
 
-public interface ICustomRequestApi {
-  <T> void sendPost(String apiPath, T payload);
+    @Input()
+    certificate: Certificate;
 
-  <T> T sendGet(String apiPath, Class<T> responseClass);
+    close(): void {
+        this.dialogRef.close();
+    }
 
-  <T> T sendGet(String apiPath, Map<String, String> queryParameters, Class<T> responseClass);
-
-  <T> List<T> getList(String apiPath, Class<T> response);
+    protected readonly Object = Object;
 }

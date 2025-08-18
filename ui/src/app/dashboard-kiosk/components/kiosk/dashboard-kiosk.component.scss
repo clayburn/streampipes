@@ -16,24 +16,33 @@
  *
  */
 
-package org.apache.streampipes.model.dashboard;
+@use '../../../../scss/_variables';
 
-import org.apache.streampipes.model.datalake.DataExplorerWidgetModel;
-import org.apache.streampipes.model.datalake.DataLakeMeasure;
+.h-100 {
+    height: 100%;
+}
 
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+.standalone-outer {
+    background: var(--color-bg-1);
+}
 
-public record CompositeDashboardModel(DashboardModel dashboard,
-                                      List<DataExplorerWidgetModel> widgets,
-                                      List<DataLakeMeasure> dataLakeMeasures) {
+.dashboard-grid {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 100%;
+}
 
-  public String getRevisionHash() {
+.standalone-toolbar {
+    height: 60px;
+    background: var(--color-bg-1);
+}
 
-    return Stream.concat(
-        Stream.of(dashboard.getRev()),
-        widgets.stream().map(DashboardEntity::getRev)
-    ).collect(Collectors.joining("|"));
-  }
+.dashboard-title {
+    margin-left: 2rem;
+    font-size: 1.25rem;
+}
+
+.dashboard-description {
+    font-size: 1.25rem;
+    font-weight: normal;
 }

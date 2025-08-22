@@ -78,12 +78,6 @@ public class ContinuousPlcRequestReader
     }
   }
 
-  private void processPlcReadResponse(PlcReadResponse readResponse) {
-    var event = eventGenerator.makeEvent(readResponse);
-    collector.collect(event);
-    this.resetIdlePulls();
-  }
-
   private void handleFailingPlcRead(Exception e) {
     // ensure that the cached connection manager removes the broken connection
     if (connectionManager instanceof CachedPlcConnectionManager) {
@@ -98,11 +92,17 @@ public class ContinuousPlcRequestReader
     }
 
     LOG.error(
-        "Error while reading from PLC with connection string {}. Setting adapter to idle for {} attemtps. {} ",
+        "Error while reading from PLC with connection string {}. Setting adapter to idle for {} attempts. {} ",
         settings.connectionString(), idlePullsBeforeNextAttempt, e.getMessage()
     );
 
     currentIdlePulls = 0;
+  }
+
+  private void processPlcReadResponse(PlcReadResponse readResponse) {
+    var event = eventGenerator.makeEvent(readResponse);
+    collector.collect(event);
+    this.resetIdlePulls();
   }
 
   private void idleRead() {

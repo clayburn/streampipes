@@ -48,7 +48,7 @@ public class PullAdapterScheduler {
       try {
         pullAdapter.pullData();
       } catch (ExecutionException | InterruptedException | TimeoutException e) {
-        LOG.error("Error while pulling data", e);
+        LOG.error("Error while pulling data: {}", e.getMessage());
         SpMonitoringManager.INSTANCE.addErrorMessage(
             adapterElementId,
             SpLogEntry.from(System.currentTimeMillis(), SpLogMessage.from(e))

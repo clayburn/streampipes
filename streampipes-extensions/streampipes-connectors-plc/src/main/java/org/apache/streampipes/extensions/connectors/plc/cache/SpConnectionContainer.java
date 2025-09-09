@@ -126,9 +126,7 @@ public class SpConnectionContainer {
     if (leasedConnection == null) {
       leasedConnection = new SpLeasedPlcConnection(this, connection, maxLeaseTime);
       connectionFuture.complete(leasedConnection);
-    }
-    // Otherwise queue the future up for completion as soon as the connection is returned.
-    else {
+    } else {
       queue.add(connectionFuture);
     }
 

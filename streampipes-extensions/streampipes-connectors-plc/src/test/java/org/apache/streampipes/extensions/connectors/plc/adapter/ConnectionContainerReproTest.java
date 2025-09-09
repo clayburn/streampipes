@@ -133,34 +133,6 @@ class ConnectionContainerReproTest {
   }
 
   @Test
-  @Disabled
-  void reproducesZombieLeaseAndHang() throws Exception {
-    FlakyManager mgr = new FlakyManager();
-    SpConnectionContainer cc = new SpConnectionContainer(
-        mgr, "mock://plc",
-        Duration.ofSeconds(30), Duration.ofSeconds(30),
-        url -> null // closeConnectionHandler
-    );
-
-    // 1) First caller gets a lease immediately.
-    Future<PlcConnection> f1 = cc.lease();
-    PlcConnection lease1 = f1.get(500, TimeUnit.MILLISECONDS);
-
-    // 2) Second caller queues up (does not complete yet).
-    Future<PlcConnection> queued = cc.lease();
-
-    // 3) Return with invalidate=true while reconnect will THROW.
-    cc.returnConnection((SpLeasedPlcConnection) lease1, true);
-
-    // 4) Now, PLC "comes back": next getConnection() will succeed.
-    //    But because of the bug, new leases will hang.
-    Future<PlcConnection> f3 = cc.lease();
-
-    // 5) Assert we hang (times out) — this demonstrates the bug.
-    assertThrows(TimeoutException.class, () -> f3.get(300, TimeUnit.MILLISECONDS));
-  }
-
-  @Test
   void recoversAfterFailedReconnectAndServesNewLeases() throws Exception {
     FlakyManager mgr = new FlakyManager();
     SpConnectionContainer cc = new SpConnectionContainer(

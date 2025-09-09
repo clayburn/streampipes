@@ -69,10 +69,14 @@ public class ContinuousPlcRequestReader
 
   private void connectAndReadPlcData() {
     try (PlcConnection plcConnection = connectionManager.getConnection(settings.connectionString())) {
-      var readRequest = requestProvider.makeReadRequest(plcConnection, settings.nodes());
-      var readResponse = readRequest.execute()
-                                    .get(5000, TimeUnit.MILLISECONDS);
-      processPlcReadResponse(readResponse);
+      if (plcConnection.isConnected()) {
+        var readRequest = requestProvider.makeReadRequest(plcConnection, settings.nodes());
+        var readResponse = readRequest.execute()
+            .get(5000, TimeUnit.MILLISECONDS);
+        processPlcReadResponse(readResponse);
+      } else {
+        LOG.info("Not connected");
+      }
     } catch (Exception e) {
       handleFailingPlcRead(e);
     }

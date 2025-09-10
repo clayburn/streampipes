@@ -15,11 +15,18 @@
  * limitations under the License.
  *
  */
+package org.apache.streampipes.dataexplorer.export.ObjectStorge;
 
-package org.apache.streampipes.model.datalake;
+import org.apache.streampipes.model.datalake.ExportProviderSettings;
 
-public record RetentionTimeConfig(
-    DataRetentionConfig dataRetentionConfig,
-    RetentionExportConfig exportConfig
-    ) {}
-
+public class ExportProviderFactory {
+    public static IObjectStorage createExportProvider(String providerType, String measurementName, ExportProviderSettings settings, String format) throws Exception {
+        switch (providerType) {
+            case "local":
+                return new LocalFolder(measurementName, format);
+            //Additional Providers can be added here 
+            default:
+                throw new IllegalArgumentException("Unsupported provider: " + providerType);
+        }
+    }
+}

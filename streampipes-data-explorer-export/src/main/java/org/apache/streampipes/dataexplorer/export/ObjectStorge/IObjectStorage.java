@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -15,11 +15,12 @@
  * limitations under the License.
  *
  */
+package org.apache.streampipes.dataexplorer.export.ObjectStorge;
 
-package org.apache.streampipes.model.datalake;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
-public record RetentionTimeConfig(
-    DataRetentionConfig dataRetentionConfig,
-    RetentionExportConfig exportConfig
-    ) {}
+import java.io.IOException;
 
+public interface IObjectStorage {
+    void store(StreamingResponseBody datastream) throws IOException;
+}

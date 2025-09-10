@@ -15,11 +15,11 @@
  * limitations under the License.
  *
  */
-
 package org.apache.streampipes.model.datalake;
 
-public record RetentionTimeConfig(
-    DataRetentionConfig dataRetentionConfig,
-    RetentionExportConfig exportConfig
-    ) {}
-
+public record ExportConfig(
+    String format,
+    String csvDelimiter,
+    String missingValueBehaviour,
+    String headerColumnName
+    ) {} 

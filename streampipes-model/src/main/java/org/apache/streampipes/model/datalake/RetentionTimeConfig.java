@@ -1,4 +1,4 @@
-/*!
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -16,8 +16,7 @@
  *
  */
 
-@use '../_variables' as sp;
-
-mat-progress-bar .mat-progress-bar-buffer {
-    background: sp.$sp-color-accent-light;
-}
+package org.apache.streampipes.model.datalake;
+//, RetentionExportConfig exportConfig
+public record RetentionTimeConfig(
+    DataRetentionConfig dataRetentionConfig) {}

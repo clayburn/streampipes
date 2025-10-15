@@ -24,7 +24,6 @@ import {
     Output,
     inject,
 } from '@angular/core';
-
 import { ShepherdService } from '../../../services/tour/shepherd.service';
 import {
     AdapterDescription,
@@ -42,11 +41,10 @@ import {
     LinkageData,
     CompactPipelineService,
 } from '@streampipes/platform-services';
-import { DialogRef } from '@streampipes/shared-ui';
+import { AssetSaveService, DialogRef } from '@streampipes/shared-ui';
 
 import { TranslateService } from '@ngx-translate/core';
-import { AssetSaveService } from '../../services/adapter-asset-configuration.service';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, lastValueFrom } from 'rxjs';
 
 @Component({
     selector: 'sp-dialog-adapter-started-dialog',
@@ -55,6 +53,13 @@ import { firstValueFrom } from 'rxjs';
 })
 export class AdapterStartedDialog implements OnInit {
     translateService = inject(TranslateService);
+    public dialogRef = inject(DialogRef<AdapterStartedDialog>);
+    private adapterService = inject(AdapterService);
+    private shepherdService = inject(ShepherdService);
+    private pipelineTemplateService = inject(PipelineTemplateService);
+    private compactPipelineService = inject(CompactPipelineService);
+    private assetSaveService = inject(AssetSaveService);
+    private dataLakeService = inject(DatalakeRestService);
 
     adapterInstalled = false;
 
@@ -109,16 +114,6 @@ export class AdapterStartedDialog implements OnInit {
     adapterErrorMessage: SpLogMessage;
     addToAssetText = '';
     deletedFromAssetText = '';
-
-    constructor(
-        public dialogRef: DialogRef<AdapterStartedDialog>,
-        private adapterService: AdapterService,
-        private shepherdService: ShepherdService,
-        private pipelineTemplateService: PipelineTemplateService,
-        private compactPipelineService: CompactPipelineService,
-        private assetSaveService: AssetSaveService,
-        private dataLakeService: DatalakeRestService,
-    ) {}
 
     ngOnInit() {
         if (this.editMode) {
@@ -204,7 +199,6 @@ export class AdapterStartedDialog implements OnInit {
                         this.startSaveInDataLakePipeline(adapterElementId);
                     } else {
                         this.startAdapter(adapterElementId, true);
-                        this.addToAsset();
                         this.addToAsset();
                     }
                 } else {
@@ -345,9 +339,9 @@ export class AdapterStartedDialog implements OnInit {
             name: pipelineId,
         });
 
-        const res = await this.dataLakeService
-            .getMeasurementByName(adapter.name)
-            .toPromise();
+        const res = await lastValueFrom(
+            this.dataLakeService.getMeasurementByName(adapter.name),
+        );
 
         linkageData.push({
             type: 'measurement',
@@ -429,7 +423,6 @@ export class AdapterStartedDialog implements OnInit {
                                 this.pipelineOperationStatus =
                                     pipelineOperationStatus;
                                 this.startAdapter(adapterElementId, true);
-                                this.addToAsset();
                                 this.addToAsset();
                             },
                             error => {

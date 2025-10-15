@@ -26,22 +26,21 @@ import {
     AssetLinkType,
     SpAsset,
     SpAssetTreeNode,
-    AdapterDescription,
 } from '@streampipes/platform-services';
 import { MatStepper } from '@angular/material/stepper';
 import { Observable } from 'rxjs';
 
 @Component({
-    selector: 'sp-adapter-asset-configuration',
-    templateUrl: './adapter-asset-configuration.component.html',
-    styleUrls: ['./adapter-asset-configuration.component.scss'],
+    selector: 'sp-asset-link-configuration',
+    templateUrl: './asset-link-configuration.component.html',
+    styleUrls: ['./asset-link-configuration.component.scss'],
     standalone: false,
 })
-export class AdapterAssetConfigurationComponent implements OnInit {
+export class AssetLinkConfigurationComponent implements OnInit {
     @Input() linkageData: LinkageData[] = [];
     @Input() stepper: MatStepper;
     @Input() isEdit: boolean;
-    @Input() adapter: AdapterDescription;
+    @Input() itemId: unknown;
 
     @Output() adapterStartedEmitter: EventEmitter<void> =
         new EventEmitter<void>();
@@ -142,7 +141,7 @@ export class AdapterAssetConfigurationComponent implements OnInit {
     }
 
     private setSelect() {
-        if (!this.adapter || !this.adapter.elementId) {
+        if (!this.itemId) {
             return;
         }
 
@@ -159,9 +158,7 @@ export class AdapterAssetConfigurationComponent implements OnInit {
 
         if (
             node.assetLinks &&
-            node.assetLinks.some(
-                link => link.resourceId === this.adapter.elementId,
-            )
+            node.assetLinks.some(link => link.resourceId === this.itemId)
         ) {
             if (!this.isSelected(node)) {
                 this.selectedAssets.push(node);

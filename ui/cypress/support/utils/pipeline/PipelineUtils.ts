@@ -37,6 +37,22 @@ export class PipelineUtils {
         PipelineUtils.startPipeline(pipelineInput);
     }
 
+    public static addPipelineWithAssetLinks(
+        pipelineInput: PipelineInput,
+        assetNameList: String[],
+    ) {
+        PipelineUtils.goToPipelineEditor();
+
+        PipelineUtils.selectDataStream(pipelineInput);
+
+        PipelineUtils.configurePipeline(pipelineInput);
+
+        PipelineUtils.startPipelineWithAssetLinkage(
+            pipelineInput,
+            assetNameList,
+        );
+    }
+
     /**
      * This method adds a sample adapter and pipeline
      */
@@ -146,6 +162,39 @@ export class PipelineUtils {
         PipelineUtils.finalizePipelineStart();
     }
 
+    public static startPipelineWithAssetLinkage(
+        pipelineInput?: PipelineInput,
+        assetNameList?: String[],
+    ) {
+        // Save and start pipeline
+        cy.dataCy('sp-editor-save-pipeline').click();
+        if (pipelineInput) {
+            cy.dataCy('sp-editor-pipeline-name').type(
+                pipelineInput.pipelineName,
+            );
+        }
+        PipelineUtils.finalizePipelineStart(assetNameList);
+    }
+
+    private static addToAsset(assetNameList) {
+        cy.dataCy('sp-show-pipeline-asset-checkbox')
+            .find('input[type="checkbox"]')
+            .then($checkbox => {
+                if (!$checkbox.prop('checked')) {
+                    cy.wrap($checkbox).click();
+                }
+            });
+
+        cy.get('mat-tree.asset-tree', { timeout: 10000 }).should('exist');
+        assetNameList.forEach(assetName => {
+            console.log(assetName);
+            cy.get('mat-tree.asset-tree')
+                .find('.mat-tree-node')
+                .contains(assetName)
+                .click();
+        });
+    }
+
     public static clonePipeline(newPipelineName: string) {
         cy.dataCy('pipeline-update-mode-clone').children().click();
         cy.dataCy('sp-editor-pipeline-name').type(newPipelineName);
@@ -156,9 +205,13 @@ export class PipelineUtils {
         cy.dataCy('sp-editor-pipeline-name').type(newPipelineName);
     }
 
-    public static finalizePipelineStart() {
+    public static finalizePipelineStart(assetNameList?: String[]) {
         cy.dataCy('sp-editor-checkbox-navigate-to-overview').children().click();
+        if (assetNameList) {
+            PipelineUtils.addToAsset(assetNameList);
+        }
         cy.dataCy('sp-editor-apply').click();
+
         cy.dataCy('sp-pipeline-started-success', { timeout: 15000 }).should(
             'be.visible',
         );

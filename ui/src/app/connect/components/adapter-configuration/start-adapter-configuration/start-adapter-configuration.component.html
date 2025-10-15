@@ -113,15 +113,15 @@
             "
             (optionSelectedEmitter)="showAsset = $event"
         >
-            <sp-adapter-asset-configuration
+            <sp-asset-link-configuration
                 *ngIf="showAsset"
                 [isEdit]="isEditMode"
-                [adapter]="adapterDescription"
+                [itemId]="adapterDescription.elementId"
                 (selectedAssetsChange)="onSelectedAssetsChange($event)"
                 (deselectedAssetsChange)="onDeselectedAssetsChange($event)"
                 (originalAssetsEmitter)="onOriginalAssetsEmitted($event)"
             >
-            </sp-adapter-asset-configuration>
+            </sp-asset-link-configuration>
         </sp-adapter-options-panel>
 
         <sp-adapter-options-panel

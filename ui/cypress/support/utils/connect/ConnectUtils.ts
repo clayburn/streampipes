@@ -84,6 +84,21 @@ export class ConnectUtils {
         ConnectEventSchemaUtils.finishEventSchemaConfiguration();
     }
 
+    public static addAdapterWithLinkedAssets(
+        adapterConfiguration: AdapterInput,
+        assetNameList,
+    ) {
+        ConnectUtils.addAdapter(adapterConfiguration);
+
+        ConnectUtils.startAdapter(
+            adapterConfiguration,
+            false,
+            false,
+            true,
+            assetNameList,
+        );
+    }
+
     private static configureDimensionProperties(
         adapterConfiguration: AdapterInput,
     ) {
@@ -98,6 +113,10 @@ export class ConnectUtils {
         }
     }
 
+    public static renameAdapter(newName: string) {
+        cy.dataCy('sp-adapter-name').clear().type(newName);
+        cy.dataCy('sp-adapter-name').should('have.value', newName);
+    }
     public static addMachineDataSimulator(
         name: string,
         persist: boolean = false,
@@ -128,6 +147,7 @@ export class ConnectUtils {
 
     public static goToConnect() {
         cy.visit('#/connect');
+        cy.dataCy('connect-create-new-adapter-button').should('be.visible');
     }
 
     public static goToNewAdapterPage() {
@@ -181,6 +201,8 @@ export class ConnectUtils {
         adapterInput: AdapterInput,
         noLiveDataView = false,
         adapterStartFails = false,
+        addToAsset = false,
+        assetNameList = [],
     ) {
         // Set adapter name
         cy.dataCy('sp-adapter-name').type(adapterInput.adapterName);
@@ -204,6 +226,12 @@ export class ConnectUtils {
             ConnectBtns.startAdapterNowCheckbox().click();
         }
 
+        //add the Adapter to an Asset
+
+        if (addToAsset) {
+            this.addToAsset(assetNameList);
+        }
+
         ConnectBtns.adapterSettingsStartAdapter().click();
 
         if (adapterStartFails) {
@@ -223,6 +251,31 @@ export class ConnectUtils {
         }
 
         this.closeAdapterPreview();
+    }
+
+    public static addToAsset(assetNameList = []) {
+        cy.dataCy('show-asset-checkbox').click();
+        cy.get('mat-tree.asset-tree', { timeout: 10000 }).should('exist');
+
+        assetNameList.forEach(assetName => {
+            cy.get('mat-tree.asset-tree')
+                .find('.mat-tree-node')
+                .contains(assetName)
+                .click();
+        });
+    }
+
+    public static editAsset(assetNameList = []) {
+        //cy.dataCy('show-asset-checkbox').click();
+        cy.get('mat-tree.asset-tree', { timeout: 10000 }).should('exist');
+
+        assetNameList.forEach(assetName => {
+            console.log(assetName);
+            cy.get('mat-tree.asset-tree')
+                .find('.mat-tree-node')
+                .contains(assetName)
+                .click();
+        });
     }
 
     // Close adapter preview

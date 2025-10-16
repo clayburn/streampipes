@@ -48,6 +48,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { map } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { ResizeEchartsService } from '../../../data-explorer-shared/services/resize-echarts.service';
+import { AssetDialogComponent } from '../../dialog/asset-dialog.component';
 
 @Component({
     selector: 'sp-data-explorer-data-view',
@@ -181,7 +182,23 @@ export class DataExplorerChartViewComponent
             this.dataView.elementId !== undefined
                 ? this.dataViewService.updateChart(this.dataView)
                 : this.dataViewService.saveChart(this.dataView);
-        observable.subscribe(() => {
+        observable.subscribe(data => {
+            const dialogRef = this.dialog.open(AssetDialogComponent, {
+                width: '500px',
+                data: {
+                    title: this.translateService.instant(
+                        'Do you want to link the chart to an Asset?',
+                    ),
+                    subtitle: this.translateService.instant(
+                        'Update asset links or close.',
+                    ),
+                    cancelTitle: this.translateService.instant('Close'),
+                    okTitle: this.translateService.instant('Update'),
+                    confirmAndCancel: true,
+                    editMode: this.editMode,
+                    dataInput: data,
+                },
+            });
             this.routingService.navigateToDataViewOverview(true);
         });
     }

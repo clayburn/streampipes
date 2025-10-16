@@ -16,21 +16,24 @@
  *
  */
 
-import { DataLakeUtils } from '../../../support/utils/datalake/DataLakeUtils';
+import { DataExplorerUtils } from '../../../support/utils/dataExplorer/DataExplorerUtils';
 
-describe('Test Heatmap View in Data Explorer', () => {
+describe('Test Histogram View in Data Explorer', () => {
     beforeEach('Setup Test', () => {
-        DataLakeUtils.initDataLakeTests();
+        DataExplorerUtils.initDataLakeTests();
     });
 
     it('Perform Test', () => {
-        DataLakeUtils.addDataViewAndWidget('view', 'Persist', 'heatmap');
+        DataExplorerUtils.addDataViewAndWidget(
+            'view',
+            'Persist',
+            'histogram-chart',
+        );
 
-        // Check checkbox
-        DataLakeUtils.openVisualizationConfig();
-        cy.get('mat-checkbox input').click({ force: true });
+        // Change field for histogram
+        DataExplorerUtils.openVisualizationConfig();
 
-        // Check if heatmap chart is visible
-        cy.dataCy('heatmap').should('be.visible');
+        // Check if histogram chart is displayed
+        cy.dataCy('histogram-chart').should('be.visible');
     });
 });

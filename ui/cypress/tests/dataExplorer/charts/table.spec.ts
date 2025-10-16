@@ -16,17 +16,23 @@
  *
  */
 
-import { DataLakeUtils } from '../../../support/utils/datalake/DataLakeUtils';
+import { DataExplorerUtils } from '../../../support/utils/dataExplorer/DataExplorerUtils';
+import { DataExplorerWidgetTableUtils } from '../../../support/utils/dataExplorer/DataExplorerWidgetTableUtils';
+import { DataExplorerWidget } from '../../../support/model/DataExplorerWidget';
 
-describe('Test Scatter View in Data Explorer', () => {
+describe('Test Table View in Data Explorer', () => {
     beforeEach('Setup Test', () => {
-        DataLakeUtils.initDataLakeTests();
+        DataExplorerUtils.initDataLakeTests();
     });
 
     it('Perform Test', () => {
-        DataLakeUtils.addDataViewAndWidget('view', 'Persist', 'scatter-chart');
+        DataExplorerUtils.addDataViewAndWidget(
+            'view',
+            'Persist',
+            DataExplorerWidget.TABLE,
+        );
 
-        // Check if scatter plot is displayed
-        cy.dataCy('scatter-chart').should('be.visible');
+        // Check if table is displayed correctly
+        DataExplorerWidgetTableUtils.checkAmountOfRows(10);
     });
 });

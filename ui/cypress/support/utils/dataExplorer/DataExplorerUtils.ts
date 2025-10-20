@@ -26,6 +26,7 @@ import { ConnectBtns } from '../connect/ConnectBtns';
 import { AdapterBuilder } from '../../builder/AdapterBuilder';
 import { differenceInMonths } from 'date-fns';
 import { GeneralUtils } from '../GeneralUtils';
+import { DataExplorerBtns } from './DataExplorerBtns';
 
 export class DataExplorerUtils {
     public static goToDatalake() {
@@ -125,7 +126,6 @@ export class DataExplorerUtils {
 
         cy.get('mat-tree.asset-tree', { timeout: 10000 }).should('exist');
         assetNameList.forEach(assetName => {
-            console.log(assetName);
             cy.get('mat-tree.asset-tree')
                 .find('.mat-tree-node')
                 .contains(assetName)
@@ -254,15 +254,6 @@ export class DataExplorerUtils {
         cy.dataCy('save-data-view-btn', { timeout: 10000 }).click({
             force: true,
         });
-        cy.dataCy('asset-dialog-cancel-delete', { timeout: 10000 }).click({
-            force: true,
-        });
-    }
-
-    public static saveToAddAssets() {
-        cy.dataCy('save-data-view-btn', { timeout: 10000 }).click({
-            force: true,
-        });
     }
 
     public static saveDashboardConfiguration() {
@@ -273,6 +264,18 @@ export class DataExplorerUtils {
         return cy.dataCy('empty-dashboard');
     }
 
+    public static addChartsToAsset(assetNameList = []) {
+        DataExplorerBtns.saveChartsToAssetBtn();
+
+        cy.dataCy('sp-show-chart-asset-checkbox').then($checkbox => {
+            if (!$checkbox.is(':checked')) {
+                cy.wrap($checkbox).click({ force: true });
+            }
+        });
+        this.addToAsset(assetNameList);
+        DataExplorerBtns.confirmAssetSelectionBtn();
+    }
+
     public static addToAsset(assetNameList = []) {
         cy.get('mat-tree.asset-tree', { timeout: 10000 }).should('exist');
 
@@ -281,12 +284,6 @@ export class DataExplorerUtils {
                 .find('.mat-tree-node')
                 .contains(assetName)
                 .click();
-        });
-    }
-
-    public static saveAssetLinkFromChart() {
-        cy.dataCy('asset-dialog-confirm-delete', { timeout: 10000 }).click({
-            force: true,
         });
     }
 
@@ -663,8 +660,9 @@ export class DataExplorerUtils {
         // Create Diagram
         DataExplorerUtils.addDataViewAndTableWidget('NewWidget', 'Persist');
         //Save
-        DataExplorerUtils.saveToAddAssets();
-        DataExplorerUtils.addToAsset(assetNames);
-        DataExplorerUtils.saveAssetLinkFromChart();
+        DataExplorerUtils.addChartsToAsset(assetNames);
+        DataExplorerUtils.saveDataViewConfiguration();
+        //Necessary for the background task to finish otherwise it steps back to charts from the following task
+        cy.wait(500);
     }
 }

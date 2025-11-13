@@ -36,4 +36,26 @@ export class UserBtns {
     public static saveEditUserBtn() {
         return cy.dataCy('sp-element-edit-user-save');
     }
+
+    public static newUserBtn() {
+        return cy.dataCy('add-new-user', { timeout: 10000 });
+    }
+
+    public static activateUserBtn() {
+        return cy.dataCy('new-user-enabled');
+    }
+
+    public static deleteUserBtn(name) {
+        return cy.dataCy('user-delete-btn-' + name);
+    }
+
+    public static confirmDeleteBtn() {
+        return cy.dataCy('confirm-delete');
+    }
+    public static firstEditUserBtn() {
+        return cy.dataCy('user-edit-btn').eq(1);
+    }
+    public static serviceDeleteBtn() {
+        return cy.dataCy('service-delete-btn');
+    }
 }

@@ -6,6 +6,7 @@
   "Name": "Name",
   "Create new API key": "Neuen API-Schlüssel erstellen",
   "Key created": "Schlüssel erstellt",
+  "Your new API key has been created. Please copy the key now - you won't be able to see the key again.": "Ihr neuer API-Schlüssel wurde erstellt. Bitte kopieren Sie den Schlüssel jetzt - Sie werden ihn nicht mehr sehen können.",
   "Existing API keys": "Vorhandene API-Schlüssel",
   "no keys available": "keine Schlüssel verfügbar",
   "API Docs": "API-Doku",

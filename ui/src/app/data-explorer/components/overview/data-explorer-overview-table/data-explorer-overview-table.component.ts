@@ -68,8 +68,7 @@ export class SpDataExplorerDataViewOverviewComponent implements OnInit {
         this.assetFilterService.applyAssetLinkType('chart');
         this.assetFilter$ =
             this.assetFilterService.currentAssetFilter$.subscribe(filter => {
-                this.currentFilterIds =
-                    filter?.activeElementIds || new Set<string>();
+                this.currentFilterIds = filter?.activeElementIds;
                 this.applyChartFilters(this.currentFilterIds);
             });
         this.getDataViews();
@@ -141,8 +140,13 @@ export class SpDataExplorerDataViewOverviewComponent implements OnInit {
         });
     }
 
-    applyChartFilters(elementIds: Set<string> = new Set<string>()): void {
-        if (elementIds.size == 0) {
+    applyChartFilters(elementIds: Set<string>): void {
+        if (this.assetFilterService.hasNoAssetFilterPermission()) {
+            elementIds = new Set<string>();
+        }
+        if (elementIds === undefined) {
+            this.filteredCharts = [];
+        } else if (elementIds.size === 0) {
             this.filteredCharts = this.charts;
         } else {
             this.filteredCharts = this.charts.filter(a =>

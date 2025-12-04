@@ -17,29 +17,38 @@
  */
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { DataExplorerWidgetModel } from '@streampipes/platform-services';
-import { ChartRegistry } from '../../../../../../chart-shared/registry/chart-registry.service';
+import {
+    EventPropertyUnion,
+    FieldConfig,
+    SourceConfig,
+} from '@streampipes/platform-services';
+import { ChartConfigurationService } from '../../../../../../chart-shared/services/chart-configuration.service';
 
 @Component({
-    selector: 'sp-chart-preview',
-    templateUrl: './chart-preview.component.html',
-    styleUrls: ['./chart-preview.component.scss'],
+    selector: 'sp-field-selection',
+    templateUrl: './field-selection.component.html',
+    styleUrls: ['./field-selection.component.scss'],
     standalone: false,
 })
-export class ChartPreviewComponent implements OnInit {
-    @Input()
-    chart: DataExplorerWidgetModel;
+export class FieldSelectionComponent implements OnInit {
+    @Input() field: FieldConfig;
+    @Input() sourceConfig: SourceConfig;
 
-    widgetTypeLabel: string;
+    @Output() addFieldEmitter: EventEmitter<EventPropertyUnion> =
+        new EventEmitter<EventPropertyUnion>();
 
-    @Output()
-    addChartEmitter: EventEmitter<string> = new EventEmitter<string>();
-
-    constructor(private widgetRegistryService: ChartRegistry) {}
+    constructor(private widgetConfigService: ChartConfigurationService) {}
 
     ngOnInit() {
-        this.widgetTypeLabel = this.widgetRegistryService.getChartTemplate(
-            this.chart.widgetType,
-        ).label;
+        if (!this.field.aggregations) {
+            this.field.aggregations = [];
+        }
+    }
+
+    triggerConfigurationUpdate() {
+        this.widgetConfigService.notify({
+            refreshData: true,
+            refreshView: true,
+        });
     }
 }

@@ -16,18 +16,11 @@
  *
  */
 
-import { Component, EventEmitter, Output } from '@angular/core';
+import { SpBreadcrumbItem } from '@streampipes/shared-ui';
 
-@Component({
-    selector: 'sp-dashboard-chart-selection-panel',
-    templateUrl: './chart-selection-panel.component.html',
-    styleUrls: [
-        './chart-selection-panel.component.scss',
-        '../../../../chart/components/chart-view/designer-panel/chart-designer-panel.component.scss',
-    ],
-    standalone: false,
-})
-export class ChartSelectionPanelComponent {
-    @Output()
-    addChartEmitter: EventEmitter<string> = new EventEmitter<string>();
+export class SpChartRoutes {
+    static BASE: SpBreadcrumbItem = {
+        label: 'Charts',
+        link: ['chart'],
+    };
 }

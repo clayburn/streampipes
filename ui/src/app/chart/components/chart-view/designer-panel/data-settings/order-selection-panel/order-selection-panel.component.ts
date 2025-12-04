@@ -16,18 +16,29 @@
  *
  */
 
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { SourceConfig } from '@streampipes/platform-services';
+import { ChartConfigurationService } from '../../../../../../chart-shared/services/chart-configuration.service';
 
 @Component({
-    selector: 'sp-dashboard-chart-selection-panel',
-    templateUrl: './chart-selection-panel.component.html',
-    styleUrls: [
-        './chart-selection-panel.component.scss',
-        '../../../../chart/components/chart-view/designer-panel/chart-designer-panel.component.scss',
-    ],
+    selector: 'sp-order-selection-panel',
+    templateUrl: './order-selection-panel.component.html',
+    styleUrls: ['./order-selection-panel.component.scss'],
     standalone: false,
 })
-export class ChartSelectionPanelComponent {
-    @Output()
-    addChartEmitter: EventEmitter<string> = new EventEmitter<string>();
+export class OrderSelectionPanelComponent implements OnInit {
+    @Input() sourceConfig: SourceConfig;
+
+    constructor(private widgetConfigService: ChartConfigurationService) {}
+
+    ngOnInit(): void {
+        this.sourceConfig.queryConfig.order ??= 'DESC';
+    }
+
+    triggerConfigurationUpdate() {
+        this.widgetConfigService.notify({
+            refreshData: true,
+            refreshView: true,
+        });
+    }
 }

@@ -1,6 +1,3 @@
-import { RetentionTimeConfig } from '@streampipes/platform-services';
-import { RetentionConfig } from '../dialog/data-retention-dialog/model/retention-config.model';
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -18,13 +15,25 @@ import { RetentionConfig } from '../dialog/data-retention-dialog/model/retention
  * limitations under the License.
  *
  */
-export class DataLakeConfigurationEntry {
-    public name: string;
-    public pipelines: string[] = [];
-    public events = 0;
-    public remove = true;
-    public elementId: string;
-    public retention: RetentionTimeConfig;
 
-    constructor() {}
+package org.apache.streampipes.dataexplorer.export.objectstorage;
+
+import org.apache.streampipes.model.configuration.ExportProviderSettings;
+import org.apache.streampipes.model.configuration.ProviderType;
+
+public class ExportProviderFactory {
+
+    
+    public static IObjectStorage createExportProvider(
+            ProviderType providerType, 
+            String measurementName, 
+            ExportProviderSettings settings, 
+            String format) throws Exception {
+
+      return switch (providerType) {
+        case FOLDER -> new LocalFolder(measurementName, format);
+        case S3 -> new S3(measurementName, format, settings);
+        default -> throw new IllegalArgumentException("Unsupported provider: " + providerType);
+      };
+    }
 }

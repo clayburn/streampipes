@@ -1,3 +1,6 @@
+import { RetentionTimeConfig } from '@streampipes/platform-services';
+import { RetentionConfig } from '../../dialog/data-retention-dialog/model/retention-config.model';
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -15,24 +18,13 @@
  * limitations under the License.
  *
  */
+export class DataLakeConfigurationEntry {
+    public name: string;
+    public pipelines: string[] = [];
+    public events = 0;
+    public remove = true;
+    public elementId: string;
+    public retention: RetentionTimeConfig;
 
-.header-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    display: inline-block;
-    padding-left: 12px; /* space so text doesn't overlap border */
-    border-left: 4px solid transparent; /* thickness of the border */
-    border-image: linear-gradient(
-            to bottom,
-            var(--color-primary),
-            var(--color-primary-dark)
-        )
-        1;
-}
-
-.header-description {
-    font-size: clamp(0.875rem, 1.2vw, 0.95rem);
-    line-height: 1.35;
-    color: var(--fg-muted);
-    font-weight: 300;
+    constructor() {}
 }

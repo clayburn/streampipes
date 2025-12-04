@@ -42,15 +42,15 @@ import {
     SpBreadcrumbService,
     SpNavigationItem,
 } from '@streampipes/shared-ui';
-import { DeleteDatalakeIndexComponent } from '../dialog/delete-datalake-index/delete-datalake-index-dialog.component';
-import { SpConfigurationTabsService } from '../configuration-tabs.service';
-import { SpConfigurationRoutes } from '../configuration.routes';
-import { DataRetentionDialogComponent } from '../dialog/data-retention-dialog/data-retention-dialog.component';
-import { ExportProviderComponent } from '../dialog/export-provider-dialog/export-provider-dialog.component';
-import { DeleteExportProviderComponent } from '../dialog/delete-export-provider/delete-export-provider-dialog.component';
+import { DeleteDatalakeIndexComponent } from '../../dialog/delete-datalake-index/delete-datalake-index-dialog.component';
+import { SpConfigurationTabsService } from '../../../configuration/configuration-tabs.service';
+import { SpConfigurationRoutes } from '../../../configuration/configuration.routes';
+import { DataRetentionDialogComponent } from '../../dialog/data-retention-dialog/data-retention-dialog.component';
+import { ExportProviderComponent } from '../../dialog/export-provider-dialog/export-provider-dialog.component';
+import { DeleteExportProviderComponent } from '../../dialog/delete-export-provider/delete-export-provider-dialog.component';
 import { TranslateService } from '@ngx-translate/core';
-import { ExportProviderConnectionTestComponent } from '../dialog/export-provider-connection-test/export-provider-connection-test.component';
-import { DataRetentionLogDialogComponent } from '../dialog/data-retention-log-dialog/data-retention-log-dialog.component';
+import { ExportProviderConnectionTestComponent } from '../../dialog/export-provider-connection-test/export-provider-connection-test.component';
+import { DataRetentionLogDialogComponent } from '../../dialog/data-retention-log-dialog/data-retention-log-dialog.component';
 
 @Component({
     selector: 'sp-datalake-configuration',
@@ -59,8 +59,6 @@ import { DataRetentionLogDialogComponent } from '../dialog/data-retention-log-di
     standalone: false,
 })
 export class DatalakeConfigurationComponent implements OnInit {
-    tabs: SpNavigationItem[] = [];
-
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
 
@@ -68,7 +66,6 @@ export class DatalakeConfigurationComponent implements OnInit {
     private dataViewDataExplorerService = inject(ChartService);
     private dialogService = inject(DialogService);
     private breadcrumbService = inject(SpBreadcrumbService);
-    private tabService = inject(SpConfigurationTabsService);
     private exportProviderRestService = inject(ExportProviderService);
     private translateService = inject(TranslateService);
     private cdr = inject(ChangeDetectorRef);
@@ -85,11 +82,9 @@ export class DatalakeConfigurationComponent implements OnInit {
         'name',
         'pipeline',
         'events',
-        'download',
-        'truncate',
-        'remove',
         'retention',
         'retentionlog',
+        'actions',
     ];
 
     displayedColumnsExport: string[] = [
@@ -105,10 +100,9 @@ export class DatalakeConfigurationComponent implements OnInit {
     pageIndex = 0;
 
     ngOnInit(): void {
-        this.tabs = this.tabService.getTabs();
         this.breadcrumbService.updateBreadcrumb([
             SpConfigurationRoutes.BASE,
-            { label: this.tabService.getTabTitle('datalake') },
+            { label: 'Datasets' },
         ]);
         this.loadAvailableMeasurements();
         this.loadAvailableExportProvider();

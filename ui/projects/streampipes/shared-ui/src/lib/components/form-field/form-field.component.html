@@ -17,21 +17,18 @@
   -->
 
 <div
+    class="form-field-outer"
     fxLayout="column"
-    fxFlex="100"
-    class="data-explorer-options-panel"
-    [ngStyle]="{ background: background, border: border }"
+    [class.mb-xl]="level === 1"
+    [class.mb-lg]="level === 2"
+    [class.mb-sm]="level === 3"
 >
-    <div
-        fxLayout="row"
-        fxLayoutAlign="start center"
-        [ngStyle]="{ 'margin-top': marginTop }"
+    <sp-form-label
+        [level]="level"
+        [label]="label"
+        [description]="description"
+        [tooltip]="tooltip"
     >
-        <span class="data-explorer-header">{{ title }} </span>
-        <ng-content select="[header]"> </ng-content>
-    </div>
-
-    <div>
-        <ng-content></ng-content>
-    </div>
+    </sp-form-label>
+    <ng-content></ng-content>
 </div>

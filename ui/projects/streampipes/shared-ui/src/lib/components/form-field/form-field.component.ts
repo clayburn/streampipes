@@ -19,21 +19,24 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-    selector: 'sp-configuration-box',
-    templateUrl: './configuration-box.component.html',
-    styleUrls: ['./configuration-box.component.scss'],
+    selector: 'sp-form-field',
+    templateUrl: './form-field.component.html',
+    styleUrls: ['./form-field.component.scss'],
     standalone: false,
 })
-export class SpConfigurationBoxComponent {
+export class FormFieldComponent {
     @Input()
-    title: string;
+    level: 1 | 2 | 3 = 2;
 
     @Input()
-    marginTop = '0';
+    label: string;
 
     @Input()
-    border = '1px solid var(--color-bg-3)';
+    description: string;
 
     @Input()
-    background = 'var(--color-bg-1)';
+    tooltip: string;
+
+    @Input()
+    margin = '0 10px';
 }

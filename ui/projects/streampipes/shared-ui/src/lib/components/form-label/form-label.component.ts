@@ -1,4 +1,4 @@
-/*!
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -16,10 +16,36 @@
  *
  */
 
-.warning {
-    border: 1px solid #dea843;
-    background: var(--color-bg-2);
-    padding: 5px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+import { Component, Input, OnInit } from '@angular/core';
+
+@Component({
+    selector: 'sp-form-label',
+    templateUrl: './form-label.component.html',
+    styleUrls: ['./form-label.component.scss'],
+    standalone: false,
+})
+export class FormLabelComponent implements OnInit {
+    @Input()
+    level: 1 | 2 | 3 = 2;
+
+    @Input()
+    label: string;
+
+    @Input()
+    description: string;
+
+    @Input()
+    tooltip: string;
+
+    margin = '';
+
+    ngOnInit(): void {
+        if (!this.margin && this.level === 1) {
+            this.margin = '10px 0px';
+        } else if (!this.margin && this.level === 2) {
+            this.margin = '5px 0px';
+        } else {
+            this.margin = '2px 0px';
+        }
+    }
 }

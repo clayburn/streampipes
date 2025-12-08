@@ -53,7 +53,6 @@ import {
 } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { SpExceptionDetailsComponent } from './components/sp-exception-message/exception-details/exception-details.component';
-import { SpWarningBoxComponent } from './components/warning-box/warning-box.component';
 import { SpBasicFieldDescriptionComponent } from './components/basic-field-description/basic-field-description.component';
 import { AssetBrowserToolbarComponent } from './components/asset-browser/asset-browser-toolbar/asset-browser-toolbar.component';
 import { AssetBrowserFilterComponent } from './components/asset-browser/asset-browser-toolbar/asset-browser-filter/asset-browser-filter.component';
@@ -83,7 +82,6 @@ import { DownloadComponent } from './dialog/data-download-dialog/components/down
 import { SelectDataRangeComponent } from './dialog/data-download-dialog/components/select-data/select-data-range/select-data-range.component';
 import { SelectDataMissingValuesComponent } from './dialog/data-download-dialog/components/select-data/select-data-missing-values/select-data-missing-values.component';
 import { MatRadioModule } from '@angular/material/radio';
-import { SpConfigurationBoxComponent } from './components/configuration-box/configuration-box.component';
 import { DateInputComponent } from './components/date-input/date-input.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
@@ -110,6 +108,9 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { CdkCopyToClipboard } from '@angular/cdk/clipboard';
 import { PaginatorService } from './components/sp-table/sp-paginator/sp-paginator.component';
+import { SpAlertBannerComponent } from './components/alert-banner/alert-banner.component';
+import { FormFieldComponent } from './components/form-field/form-field.component';
+import { FormLabelComponent } from './components/form-label/form-label.component';
 
 @NgModule({
     declarations: [
@@ -140,14 +141,13 @@ import { PaginatorService } from './components/sp-table/sp-paginator/sp-paginato
         SpLabelComponent,
         SpTableComponent,
         SplitSectionComponent,
-        SpWarningBoxComponent,
+        SpAlertBannerComponent,
         TimeRangeSelectorComponent,
         TimeRangeSelectorMenuComponent,
         DataExplorerRefreshIntervalSettingsComponent,
         SelectDataComponent,
         SelectFormatComponent,
         DownloadComponent,
-        SpConfigurationBoxComponent,
         SelectDataRangeComponent,
         SelectDataMissingValuesComponent,
         SidebarResizeComponent,
@@ -165,6 +165,8 @@ import { PaginatorService } from './components/sp-table/sp-paginator/sp-paginato
         AssetLinkConfigurationComponent,
         AssetBrowserFilterAssetModelComponent,
         ObjectPermissionDialogComponent,
+        FormFieldComponent,
+        FormLabelComponent,
     ],
     imports: [
         CommonModule,
@@ -226,14 +228,13 @@ import { PaginatorService } from './components/sp-table/sp-paginator/sp-paginato
         SpBasicHeaderTitleComponent,
         SpBasicViewComponent,
         SpBasicNavTabsComponent,
-        SpConfigurationBoxComponent,
         SpExceptionDetailsComponent,
         SpExceptionMessageComponent,
         SpExceptionDetailsDialogComponent,
         SpLabelComponent,
         SpTableComponent,
         SplitSectionComponent,
-        SpWarningBoxComponent,
+        SpAlertBannerComponent,
         CustomTimeRangeSelectionComponent,
         TimeRangeSelectorComponent,
         TimeRangeSelectorMenuComponent,
@@ -246,6 +247,8 @@ import { PaginatorService } from './components/sp-table/sp-paginator/sp-paginato
         SidebarResizeComponent,
         SpTableActionsDirective,
         ObjectPermissionDialogComponent,
+        FormFieldComponent,
+        FormLabelComponent,
     ],
 })
 export class SharedUiModule {}

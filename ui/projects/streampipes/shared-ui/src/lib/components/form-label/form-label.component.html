@@ -16,6 +16,24 @@
   ~
   -->
 
-<div fxLayout="row" fxFlex="100" class="warning">
-    <ng-content></ng-content>
+<div
+    class="label-title"
+    [class.text-lg]="level === 1"
+    [class.text-md]="level === 2"
+    [class.text-sm]="level === 3"
+    [class.label-title-3]="level === 3"
+    [ngStyle]="{ margin: margin }"
+    [matTooltip]="tooltip"
+>
+    {{ label }}
+    @if (description) {
+        <div
+            class="label-description"
+            [class.text-md]="level === 1"
+            [class.text-sm]="level === 2"
+            [class.text-xs]="level === 3"
+        >
+            {{ description }}
+        </div>
+    }
 </div>

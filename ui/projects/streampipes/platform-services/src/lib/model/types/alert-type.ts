@@ -16,18 +16,4 @@
  *
  */
 
-.error-panel {
-    background: var(--color-bg-1);
-}
-
-.error {
-    border: 1px solid var(--color-warn);
-}
-
-.color-warn {
-    color: var(--color-warn);
-}
-
-.mr-15 {
-    margin-right: 15px;
-}
+export type AlertType = 'info' | 'success' | 'warning' | 'error';

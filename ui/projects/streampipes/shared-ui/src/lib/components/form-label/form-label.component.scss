@@ -1,4 +1,4 @@
-/*
+/*!
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -16,15 +16,18 @@
  *
  */
 
-import { Component, Input } from '@angular/core';
+.label-title {
+    font-family: var(--font-emphasized), sans-serif;
+    font-weight: 700;
+    display: inline-block;
+}
 
-@Component({
-    selector: 'sp-warning-box',
-    templateUrl: './warning-box.component.html',
-    styleUrls: ['./warning-box.component.scss'],
-    standalone: false,
-})
-export class SpWarningBoxComponent {
-    @Input()
-    color = '';
+.label-title-3 {
+    font-weight: normal;
+}
+
+.label-description {
+    font-family: var(--font-emphasized), sans-serif;
+    color: var(--fg-muted);
+    font-weight: 300;
 }

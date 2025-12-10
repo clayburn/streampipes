@@ -16,33 +16,24 @@
  *
  */
 
-import { Component, inject, Input, OnInit } from '@angular/core';
-import {
-    AssetConstants,
-    AssetLinkType,
-    GenericStorageService,
-    SpAsset,
-} from '@streampipes/platform-services';
+import { Component, Input, OnInit } from '@angular/core';
+import { Certificate } from '@streampipes/platform-services';
 
 @Component({
-    selector: 'sp-view-asset-links',
-    templateUrl: './view-asset-links.component.html',
-    styleUrls: ['./view-asset-links.component.scss'],
+    selector: 'sp-certificate-label',
     standalone: false,
+    templateUrl: './certificate-label.component.html',
 })
-export class ViewAssetLinksComponent implements OnInit {
+export class CertificateLabelComponent implements OnInit {
     @Input()
-    selectedAsset: SpAsset;
+    certificate: Certificate;
 
-    assetLinkTypes: AssetLinkType[] = [];
+    dnsNames: string[] = [];
 
-    private genericStorageService = inject(GenericStorageService);
-
-    ngOnInit() {
-        this.genericStorageService
-            .getAllDocuments(AssetConstants.ASSET_LINK_TYPES_DOC_NAME)
-            .subscribe(res => {
-                this.assetLinkTypes = res;
-            });
+    ngOnInit(): void {
+        this.dnsNames = this.certificate.subjectAlternativeNames.filter(san =>
+            san.startsWith('DNS'),
+        );
+        console.log(this.dnsNames);
     }
 }

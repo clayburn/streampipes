@@ -1,4 +1,4 @@
-/*!
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -16,17 +16,8 @@
  *
  */
 
-.service-tag {
-    border-radius: 20px;
-    margin-right: 10px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    border: 1px solid var(--color-bg-3);
-    background: var(--color-bg-3);
-    display: inline-block;
-    padding: 5px 10px;
-}
+package org.apache.streampipes.model.opcua;
 
-.service-tag-prefix {
-    font-weight: bold;
+public record CertificateUsage(String associatedResourceId,
+                               String thumbprint) {
 }

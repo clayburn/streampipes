@@ -28,8 +28,49 @@ jobs:
       uses: actions/setup-java@v5
       with:
         distribution: 'temurin'
-        java-version: |
-#          17
-          21
-    - name: Build with Maven
-      run: mvn clean
+        java-version: 21
+    - name: Provision and configure Artifact Cache
+      shell: bash
+      run: |
+        TOOL_DIR="${{ runner.tool_cache }}/develocity/artifact-cache/${{
+        env.ARTIFACT_CACHE_CLI_VERSION }}"
+        JAR_PATH="$TOOL_DIR/${{ env.ARTIFACT_CACHE_CLI_FILENAME }}.jar"
+        mkdir -p "$TOOL_DIR"
+        
+        # Download if not present
+        if [ ! -f "$JAR_PATH" ]; then
+        echo "Downloading Artifact Cache CLI v${{ env.ARTIFACT_CACHE_CLI_VERSION }}..."
+        curl --location --fail --silent --show-error \
+        --connect-timeout 5 --max-time 30 \
+        --retry 3 --retry-delay 3 --retry-max-time 60 \
+        --user "$ARTIFACT_CACHE_REPO_USERNAME:$ARTIFACT_CACHE_REPO_PASSWORD" \
+        "${{ env.ARTIFACT_CACHE_REPO }}/com/gradle/${{
+          env.ARTIFACT_CACHE_CLI_FILENAME }}/${{ env.ARTIFACT_CACHE_CLI_VERSION }}/${{
+          env.ARTIFACT_CACHE_CLI_FILENAME }}-${{ env.ARTIFACT_CACHE_CLI_VERSION }}.jar" \
+        --output "$JAR_PATH"
+        fi
+        
+        CMD="${{ env[format('JAVA_HOME_21_{0}', runner.arch)] }}/bin/java -jar
+        $JAR_PATH"
+        echo "ARTIFACT_CACHE_CMD=$CMD" >> $GITHUB_ENV
+        
+        CMD_OPTS="--dv-server=$DEVELOCITY_URL --image-name=$ARTIFACT_CACHE_IMAGE
+        $ARTIFACT_CACHE_OPTS"
+        echo "ARTIFACT_CACHE_CMD_OPTS=$CMD_OPTS" >> $GITHUB_ENV
+
+    - name: Restore from Artifact Cache
+      id: restore_cache
+      run: $ARTIFACT_CACHE_CMD restore $ARTIFACT_CACHE_CMD_OPTS
+    - name: Warn on Cache Restore Failure
+      if: steps.restore_cache.outcome == 'failure'
+      run: 'echo "WARNING: Could not restore the Artifact Cache. The build will proceed but may be slower."'
+    - name: Build project
+      run: mvn clean verify
+    - name: Store to Artifact Cache
+      if: success()
+      id: store_cache
+      continue-on-error: true
+      run: $ARTIFACT_CACHE_CMD store $ARTIFACT_CACHE_CMD_OPTS
+
+
+

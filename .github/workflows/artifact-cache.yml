@@ -8,7 +8,7 @@ on:
     - cron: '0 0 * * *'  # nightly
 
 env:
-  ARTIFACT_CACHE_CLI_VERSION: 0.10
+  ARTIFACT_CACHE_CLI_VERSION: "0.10"
   ARTIFACT_CACHE_IMAGE: sample-gradle
   DEVELOCITY_URL: https://ge.solutions-team.gradle.com
   DEVELOCITY_ACCESS_KEY: ${{ secrets.STREAMPIPES_DEVELOCITY_ACCESS_KEY }}

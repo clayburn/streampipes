@@ -1,0 +1,35 @@
+name: artifact-cache.yml
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - dev
+  schedule:
+    - cron: '0 0 * * *'  # nightly
+
+env:
+  ARTIFACT_CACHE_CLI_VERSION: 0.10
+  ARTIFACT_CACHE_IMAGE: sample-gradle
+  DEVELOCITY_URL: https://ge.solutions-team.gradle.com
+  DEVELOCITY_ACCESS_KEY: ${{ secrets.STREAMPIPES_DEVELOCITY_ACCESS_KEY }}
+  ARTIFACT_CACHE_REPO_USERNAME: ${{ secrets.ARTIFACT_CACHE_REPO_USERNAME }}
+  ARTIFACT_CACHE_REPO_PASSWORD: ${{ secrets.ARTIFACT_CACHE_REPO_PASSWORD }}
+  ARTIFACT_CACHE_REPO: https://gradlecom.jfrog.io/artifactory/develocity-artifactcache-cli-libs-releases-local
+  ARTIFACT_CACHE_CLI_FILENAME: develocity-artifact-cache-cli
+  ARTIFACT_CACHE_OPTS: "--maven-home=$HOME/.m2"
+
+jobs:
+  build-maven:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v6
+    - name: Set up JDK
+      uses: actions/setup-java@v5
+      with:
+        distribution: 'temurin'
+        java-version: |
+#          17
+          21
+    - name: Build with Maven
+      run: mvn clean

@@ -8,18 +8,19 @@ on:
     - cron: '0 0 * * *'  # nightly
 
 env:
-  ARTIFACT_CACHE_CLI_VERSION: "0.10"
+  ARTIFACT_CACHE_CLI_VERSION: "0.10.0"
   ARTIFACT_CACHE_IMAGE: sample-gradle
   DEVELOCITY_URL: https://ge.solutions-team.gradle.com
   DEVELOCITY_ACCESS_KEY: ${{ secrets.STREAMPIPES_DEVELOCITY_ACCESS_KEY }}
   ARTIFACT_CACHE_REPO_USERNAME: ${{ secrets.ARTIFACT_CACHE_REPO_USERNAME }}
   ARTIFACT_CACHE_REPO_PASSWORD: ${{ secrets.ARTIFACT_CACHE_REPO_PASSWORD }}
-  ARTIFACT_CACHE_REPO: https://gradlecom.jfrog.io/artifactory/develocity-artifactcache-cli-libs-releases-local
+  ARTIFACT_CACHE_REPO: https://gradlecom.jfrog.io/artifactory/develocity-artifact-cache-cli-libs-releases
   ARTIFACT_CACHE_CLI_FILENAME: develocity-artifact-cache-cli
   ARTIFACT_CACHE_OPTS: "--maven-home=$HOME/.m2"
 
 jobs:
   build-maven:
+    name: Build Maven with Artifact Cache
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -32,30 +33,24 @@ jobs:
     - name: Provision and configure Artifact Cache
       shell: bash
       run: |
-        TOOL_DIR="${{ runner.tool_cache }}/develocity/artifact-cache/${{
-        env.ARTIFACT_CACHE_CLI_VERSION }}"
+        TOOL_DIR="${{ runner.tool_cache }}/develocity/artifact-cache/${{ env.ARTIFACT_CACHE_CLI_VERSION }}"
         JAR_PATH="$TOOL_DIR/${{ env.ARTIFACT_CACHE_CLI_FILENAME }}.jar"
         mkdir -p "$TOOL_DIR"
         
-        # Download if not present
         if [ ! -f "$JAR_PATH" ]; then
-        echo "Downloading Artifact Cache CLI v${{ env.ARTIFACT_CACHE_CLI_VERSION }}..."
-        curl --location --fail --silent --show-error \
-        --connect-timeout 5 --max-time 30 \
-        --retry 3 --retry-delay 3 --retry-max-time 60 \
-        --user "$ARTIFACT_CACHE_REPO_USERNAME:$ARTIFACT_CACHE_REPO_PASSWORD" \
-        "${{ env.ARTIFACT_CACHE_REPO }}/com/gradle/${{
-          env.ARTIFACT_CACHE_CLI_FILENAME }}/${{ env.ARTIFACT_CACHE_CLI_VERSION }}/${{
-          env.ARTIFACT_CACHE_CLI_FILENAME }}-${{ env.ARTIFACT_CACHE_CLI_VERSION }}.jar" \
-        --output "$JAR_PATH"
+          echo "Downloading Artifact Cache CLI v${{ env.ARTIFACT_CACHE_CLI_VERSION }}..."
+          curl --location --fail --silent --show-error \
+          --connect-timeout 5 --max-time 30 \
+          --retry 3 --retry-delay 3 --retry-max-time 60 \
+          --user "${{ env.ARTIFACT_CACHE_REPO_USERNAME }}:${{ env.ARTIFACT_CACHE_REPO_PASSWORD }}" \
+          "${{ env.ARTIFACT_CACHE_REPO }}/com/gradle/${{ env.ARTIFACT_CACHE_CLI_FILENAME }}/${{ env.ARTIFACT_CACHE_CLI_VERSION }}/${{ env.ARTIFACT_CACHE_CLI_FILENAME }}-${{ env.ARTIFACT_CACHE_CLI_VERSION }}.jar" \
+          --output "$JAR_PATH"
         fi
         
-        CMD="${{ env[format('JAVA_HOME_21_{0}', runner.arch)] }}/bin/java -jar
-        $JAR_PATH"
+        CMD="${{ env[format('JAVA_HOME_21_{0}', runner.arch)] }}/bin/java -jar $JAR_PATH"
         echo "ARTIFACT_CACHE_CMD=$CMD" >> $GITHUB_ENV
         
-        CMD_OPTS="--dv-server=$DEVELOCITY_URL --image-name=$ARTIFACT_CACHE_IMAGE
-        $ARTIFACT_CACHE_OPTS"
+        CMD_OPTS="--dv-server=$DEVELOCITY_URL --image-name=$ARTIFACT_CACHE_IMAGE $ARTIFACT_CACHE_OPTS"
         echo "ARTIFACT_CACHE_CMD_OPTS=$CMD_OPTS" >> $GITHUB_ENV
 
     - name: Restore from Artifact Cache

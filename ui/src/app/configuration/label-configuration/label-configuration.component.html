@@ -64,11 +64,14 @@
                     </th>
                     <td mat-cell *matCellDef="let label">
                         <sp-label
-                            size="small"
                             [labelText]="label.label"
-                            [labelBackground]="label.color"
+                            [color]="label.color"
+                            variant="solid"
+                            shape="pill"
+                            size="medium"
                             data-cy="label-text"
-                        ></sp-label>
+                        >
+                        </sp-label>
                     </td>
                 </ng-container>
                 <ng-container matColumnDef="description">

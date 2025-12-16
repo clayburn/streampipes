@@ -32,10 +32,14 @@ jobs:
           java-version: '17'
           cache: 'maven'
 
+      - name: Set up Develocity Maven extension
+        uses: gradle/develocity-actions/setup-maven@v2.0
+        with:
+          develocity-url: "https://ge.solutions-team.gradle.com"
+          develocity-access-key: ${{ secrets.STREAMPIPES_DEVELOCITY_ACCESS_KEY }}
+
       - name: Validate java code
         run: mvn clean verify
-        env:
-          DEVELOCITY_ACCESS_KEY: ${{ secrets.STREAMPIPES_DEVELOCITY_ACCESS_KEY }}
 
   run-format-and-lint-ui:
     runs-on: ubuntu-latest
@@ -51,25 +55,21 @@ jobs:
           cache-dependency-path: ui/package-lock.json
 
       - name: Set up Develocity npm agent
-        run: |
-          npm exec -y -- pacote extract @gradle-tech/develocity-agent ~/.node_libraries/@gradle-tech/develocity-agent
+        uses: gradle/develocity-actions/setup-npm@v2.0
+        with:
+          develocity-url: "https://ge.solutions-team.gradle.com"
+          develocity-access-key: ${{ secrets.STREAMPIPES_DEVELOCITY_ACCESS_KEY }}
 
       - name: Install dependencies
         working-directory: ./ui
         run: |
           npm install
-        env:
-          DEVELOCITY_ACCESS_KEY: ${{ secrets.STREAMPIPES_DEVELOCITY_ACCESS_KEY }}
-          NODE_OPTIONS: '-r @gradle-tech/develocity-agent/preload'
 
       - name: Format and Lint all files
         working-directory: ./ui
         run: |
           npm run format
           npm run lint
-        env:
-          DEVELOCITY_ACCESS_KEY: ${{ secrets.STREAMPIPES_DEVELOCITY_ACCESS_KEY }}
-          NODE_OPTIONS: '-r @gradle-tech/develocity-agent/preload'
 
   run-cypress-e2e-tests:
     runs-on: ubuntu-latest
@@ -93,30 +93,25 @@ jobs:
           cache-dependency-path: ui/package-lock.json
 
       - name: Set up Develocity npm agent
-        run: |
-          npm exec -y -- pacote extract @gradle-tech/develocity-agent ~/.node_libraries/@gradle-tech/develocity-agent
+        uses: gradle/develocity-actions/setup-npm@v2.0
+        with:
+          develocity-url: "https://ge.solutions-team.gradle.com"
+          develocity-access-key: ${{ secrets.STREAMPIPES_DEVELOCITY_ACCESS_KEY }}
+
 
       - name: Install NPM dependencies
         working-directory: ./ui
         run: |
           rm -rf node_modules package-lock.json
           npm install
-        env:
-          DEVELOCITY_ACCESS_KEY: ${{ secrets.STREAMPIPES_DEVELOCITY_ACCESS_KEY }}
-          NODE_OPTIONS: '-r @gradle-tech/develocity-agent/preload'
 
       - name: Build UI
         working-directory: ./ui
         run: |
           npm run build
-        env:
-          DEVELOCITY_ACCESS_KEY: ${{ secrets.STREAMPIPES_DEVELOCITY_ACCESS_KEY }}
-          NODE_OPTIONS: '-r @gradle-tech/develocity-agent/preload'
 
       - name: Build with Maven
         run: mvn clean package
-        env:
-          DEVELOCITY_ACCESS_KEY: ${{ secrets.STREAMPIPES_DEVELOCITY_ACCESS_KEY }}
 
       - name: Build and run streampipes
         run: docker compose up --build -d
@@ -128,9 +123,6 @@ jobs:
       - name: 'UI Tests'
         working-directory: ./ui
         run: npx cypress run --spec "cypress/tests/**/*.smoke.spec.ts"
-        env:
-          DEVELOCITY_ACCESS_KEY: ${{ secrets.STREAMPIPES_DEVELOCITY_ACCESS_KEY }}
-          NODE_OPTIONS: '-r @gradle-tech/develocity-agent/preload'
 
   python-quality-checks:
     runs-on: ubuntu-latest
